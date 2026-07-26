@@ -1,5 +1,6 @@
 :root {
   --cm-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  --cm-sprocket: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16' viewBox='0 0 48 16'%3E%3Crect x='4' y='4' width='8' height='8' rx='1' fill='%23B8955A' fill-opacity='0.55'/%3E%3Crect x='20' y='4' width='8' height='8' rx='1' fill='%23B8955A' fill-opacity='0.55'/%3E%3Crect x='36' y='4' width='8' height='8' rx='1' fill='%23B8955A' fill-opacity='0.55'/%3E%3C/svg%3E");
 }
 
 ::selection {
@@ -33,17 +34,47 @@
   z-index: 0;
 }
 
+/* —— Buttons & forms —— */
 .cm-brand .button,
 .cm-brand .button-primary,
-.cm-brand .button-secondary {
-  border-radius: 2px;
+.cm-brand .button-secondary,
+.cm-brand .add-to-cart-button {
+  border-radius: 0;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 0.75rem;
 }
 
+.cm-brand .button-secondary {
+  border-color: var(--cm-gold-deep);
+}
+
+.cm-brand .field__input,
+.cm-brand input:not([type='checkbox']):not([type='radio']):not([type='range']),
+.cm-brand textarea,
+.cm-brand select {
+  border-radius: 0;
+  border-width: 2px;
+  border-color: var(--cm-taupe);
+}
+
+.cm-brand .field__input:focus-visible,
+.cm-brand input:focus-visible,
+.cm-brand textarea:focus-visible,
+.cm-brand select:focus-visible {
+  outline: 3px solid var(--cm-burgundy);
+  outline-offset: 2px;
+  border-color: var(--cm-burgundy);
+}
+
+/* —— Header —— */
 .cm-brand .header__row {
   backdrop-filter: blur(10px);
+}
+
+.cm-brand .header:not(.header--transparent) .header__row {
+  background: color-mix(in srgb, var(--cm-cream) 94%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--cm-gold) 55%, transparent);
 }
 
 .cm-brand .announcement-bar {
@@ -51,6 +82,7 @@
   color: var(--cm-cream);
   --color-foreground: var(--cm-cream);
   --color-background: var(--cm-burgundy);
+  box-shadow: inset 0 -2px 0 var(--cm-gold);
 }
 
 .cm-brand .header-logo__text,
@@ -69,6 +101,12 @@
   height: auto;
 }
 
+.cm-brand .header-menu__link:hover,
+.cm-brand .header-menu__link[aria-current='page'] {
+  box-shadow: inset 0 -2px 0 var(--cm-gold);
+}
+
+/* —— Footer —— */
 .cm-brand .footer,
 .cm-brand .footer-utilities {
   letter-spacing: 0.02em;
@@ -84,11 +122,62 @@
   margin: 0;
 }
 
-.cm-brand .product-card,
-.cm-brand .product-card__content,
-.cm-brand .product-card__image,
-.cm-brand .product-card img {
-  border-radius: 0;
+.cm-brand .cm-footer__ribbon {
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--cm-gold) 70%, transparent);
+}
+
+/* —— Film sprocket / gold-rule section dividers —— */
+.cm-brand .section-cm-ticker,
+.cm-brand .section-cm-photostrip,
+.cm-brand .section-cm-manifesto,
+.cm-brand .ui-test-product-list,
+.cm-brand .section-cm-find {
+  position: relative;
+}
+
+.cm-brand .section-cm-ticker::before,
+.cm-brand .section-cm-photostrip::before,
+.cm-brand .section-cm-manifesto::before,
+.cm-brand .ui-test-product-list::before,
+.cm-brand .section-cm-find::before {
+  content: '';
+  display: block;
+  height: 16px;
+  width: min(100% - 2.5rem, 70rem);
+  margin-inline: auto;
+  margin-block-start: 0.25rem;
+  background-image: var(--cm-sprocket);
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: 48px 16px;
+  opacity: 0.85;
+}
+
+.cm-brand .section-cm-photostrip::after,
+.cm-brand .ui-test-product-list::after {
+  content: '';
+  display: block;
+  width: min(100% - 2.5rem, 12rem);
+  height: 1px;
+  margin: 0 auto 0.5rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cm-gold) 20%,
+    var(--cm-gold) 80%,
+    transparent
+  );
+}
+
+/* —— Scrapbook shop strip —— */
+.cm-brand .ui-test-product-list {
+  background: color-mix(in srgb, var(--cm-cream) 88%, var(--cm-blush));
+}
+
+.cm-brand .ui-test-product-list .section-resource-list__header {
+  padding-block-end: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--cm-gold) 65%, transparent);
+  margin-block-end: 0.5rem;
 }
 
 .cm-brand .section-resource-list__header h2,
@@ -97,16 +186,146 @@
   letter-spacing: -0.02em;
 }
 
+.cm-brand .ui-test-product-list .button-secondary {
+  border-radius: 0;
+  border-color: var(--cm-gold-deep);
+  color: var(--cm-burgundy);
+  background: transparent;
+  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+}
+
+.cm-brand .product-card,
+.cm-brand .product-card__content,
+.cm-brand .product-card__image,
+.cm-brand .product-card img {
+  border-radius: 0;
+}
+
 .cm-brand .product-card {
-  transition: transform 200ms ease;
+  background: var(--cm-cream);
+  padding: 0.65rem 0.65rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--cm-taupe) 75%, transparent);
+  box-shadow: 0 14px 32px rgb(var(--color-foreground-rgb) / 0.06);
+  transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
 .cm-brand .product-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) rotate(-0.4deg);
+  box-shadow: 0 18px 36px rgb(var(--color-foreground-rgb) / 0.1);
 }
 
 .cm-brand .product-card img {
   filter: contrast(1.04) saturate(0.92);
+}
+
+.cm-brand .product-card__image,
+.cm-brand .product-card .media {
+  border: 1px solid color-mix(in srgb, var(--cm-ink) 12%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--cm-gold) 35%, transparent);
+  outline-offset: -5px;
+}
+
+.cm-brand .product-card .h5,
+.cm-brand .product-card .product-title,
+.cm-brand .product-card a {
+  font-family: var(--font-heading--family);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.cm-brand .product-card .price {
+  color: var(--cm-burgundy);
+  font-family: var(--font-subheading--family);
+  letter-spacing: 0.06em;
+}
+
+/* —— Cart drawer: booth night —— */
+.cm-brand #cart-drawer .theme-drawer__dialog.color-custom-drawer,
+.cm-brand #cart-drawer .theme-drawer__dialog {
+  --color-background: var(--cm-burgundy);
+  --color-foreground: var(--cm-cream);
+  --color-primary-button-background: var(--cm-cream);
+  --color-primary-button-text: var(--cm-burgundy);
+  background: var(--cm-burgundy);
+  color: var(--cm-cream);
+  border-inline-start: 2px solid var(--cm-gold);
+}
+
+.cm-brand .cart-drawer__content,
+.cm-brand .cart-drawer__inner {
+  background: var(--cm-burgundy);
+  color: var(--cm-cream);
+}
+
+.cm-brand .theme-drawer__title,
+.cm-brand #cart-drawer-heading {
+  font-family: var(--font-heading--family);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.cm-brand .cart-drawer__items .cart-items__table-row {
+  border-bottom-color: color-mix(in srgb, var(--cm-gold) 45%, transparent);
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--cm-gold) 40%, transparent);
+  margin-block-end: 0.85rem;
+  background: color-mix(in srgb, var(--cm-ink) 18%, var(--cm-burgundy));
+}
+
+.cm-brand .cart-drawer__summary {
+  border-top: 1px solid color-mix(in srgb, var(--cm-gold) 55%, transparent);
+}
+
+.cm-brand #cart-drawer .button-primary,
+.cm-brand #cart-drawer .cart-summary .button {
+  border-radius: 0;
+  background: var(--cm-cream);
+  color: var(--cm-burgundy);
+  border: 1px solid var(--cm-gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cm-brand .cart-title h1 {
+  font-family: var(--font-heading--family);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* —— PDP / collection —— */
+.cm-brand .product-information .price,
+.cm-brand .product-details .price {
+  color: var(--cm-burgundy);
+  font-family: var(--font-heading--family);
+}
+
+.cm-brand .product-information .add-to-cart-button,
+.cm-brand .sticky-add-to-cart .button {
+  border-radius: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cm-brand .product-media-gallery img,
+.cm-brand .product-media img {
+  border-radius: 0;
+}
+
+.cm-brand .collection-hero h1,
+.cm-brand .shopify-section .section h1 {
+  font-family: var(--font-heading--family);
+}
+
+/* —— Hero gold script accent —— */
+.cm-brand .cm-hero__script {
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--cm-gold) 35%, transparent);
+}
+
+.cm-brand .cm-hero__cta {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cm-gold) 50%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -115,7 +334,9 @@
   }
 
   .cm-hero__media-img,
-  .cm-photostrip__frame {
+  .cm-photostrip__frame,
+  .cm-brand .product-card {
     animation: none;
+    transition: none;
   }
 }

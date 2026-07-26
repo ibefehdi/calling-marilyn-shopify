@@ -13,6 +13,7 @@
     <blockquote class="cm-manifesto__quote" id="cm-manifesto-heading-{{ section.id }}">
       <p>{{ quote }}</p>
     </blockquote>
+    <div class="cm-manifesto__rule" aria-hidden="true"></div>
     {% if attribution != blank %}
       <cite class="cm-manifesto__cite">{{ attribution }}</cite>
     {% endif %}
@@ -34,6 +35,17 @@
             widths: '600, 900, 1200, 1400',
             alt: manifesto_alt
         }}
+      </div>
+    {% else %}
+      <div class="cm-manifesto__media">
+        <img
+          class="cm-manifesto__img"
+          src="{{ 'cm-hero-banner.png' | asset_url }}"
+          alt="{{ shop.name | escape }}"
+          width="1400"
+          height="960"
+          loading="lazy"
+        >
       </div>
     {% endif %}
     {% if body != blank %}
@@ -88,6 +100,12 @@
     text-wrap: balance;
   }
 
+  .cm-manifesto__rule {
+    width: 4.5rem;
+    height: 1px;
+    background: var(--cm-gold);
+  }
+
   .cm-manifesto__cite {
     font-family: var(--font-accent--family);
     font-size: 1.6rem;
@@ -98,6 +116,8 @@
   .cm-manifesto__media {
     overflow: hidden;
     border: 1px solid var(--cm-taupe);
+    outline: 1px solid color-mix(in srgb, var(--cm-gold) 50%, transparent);
+    outline-offset: -6px;
   }
 
   .cm-manifesto__img {

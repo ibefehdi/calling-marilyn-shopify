@@ -13,13 +13,16 @@
       "type": "cm-cinema-hero",
       "settings": {
         "image": "shopify://shop_images/image.png",
-        "script_line": "",
+        "script_line": "presenting",
         "heading": "Calling Marilyn",
         "tagline": "An event lasts a day. A photo lasts forever.",
         "ribbon_text": "PHOTOS",
         "cta_label": "Find Us",
-        "cta_link": "https://www.instagram.com/callingmarilyn/",
-        "cta_new_tab": true,
+        "cta_link": "/pages/locations",
+        "cta_new_tab": false,
+        "cta_secondary_label": "See the moments",
+        "cta_secondary_link": "https://www.instagram.com/callingmarilyn/",
+        "cta_secondary_new_tab": true,
         "overlay_opacity": 15
       }
     },
@@ -29,7 +32,7 @@
         "t1": {
           "type": "item",
           "settings": {
-            "text": "Artisian Booths"
+            "text": "Artisan Booths"
           }
         },
         "t2": {
@@ -75,28 +78,28 @@
           "type": "frame",
           "settings": {
             "image": "shopify://shop_images/mariliyn1.png",
-            "caption": "one"
+            "caption": "smile"
           }
         },
         "f2": {
           "type": "frame",
           "settings": {
             "image": "shopify://shop_images/marilyn2.png",
-            "caption": "two"
+            "caption": "pose"
           }
         },
         "f3": {
           "type": "frame",
           "settings": {
             "image": "shopify://shop_images/marilyn4.png",
-            "caption": "three"
+            "caption": "laugh"
           }
         },
         "f4": {
           "type": "frame",
           "settings": {
             "image": "shopify://shop_images/marilyn3.png",
-            "caption": "four"
+            "caption": "kiss"
           }
         }
       },
@@ -108,7 +111,8 @@
       ],
       "settings": {
         "eyebrow": "The booth",
-        "heading": "Four frames, Two Strips. Forever."
+        "heading": "Four frames. Two Strips. Forever.",
+        "stamp": "Kuwait · Calling Marilyn"
       }
     },
     "cm_manifesto": {
@@ -187,12 +191,12 @@
               "type": "_product-list-button",
               "name": "t:names.product_list_button",
               "settings": {
-                "label": "View all",
+                "label": "View all frames",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
-                "custom_button_background": "{{ settings.color_palette.foreground }}",
-                "custom_button_text": "{{ settings.color_palette.background }}",
-                "custom_button_border": "{{ settings.color_palette.background }}",
+                "custom_button_background": "{{ settings.color_palette.background }}",
+                "custom_button_text": "{{ settings.color_palette.color1 }}",
+                "custom_button_border": "#b8955a",
                 "link_text_color": "",
                 "width": "fit-content",
                 "custom_width": 100,
@@ -254,7 +258,7 @@
                 "font_size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
-                "case": "none",
+                "case": "uppercase",
                 "wrap": "pretty",
                 "text_color": "",
                 "background": false,
@@ -307,7 +311,7 @@
         "columns": 4,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 16,
+        "columns_gap": 20,
         "rows_gap": 28,
         "icons_style": "arrow",
         "icons_shape": "none",
@@ -315,8 +319,8 @@
         "horizontal_alignment": "flex-start",
         "gap": 28,
         "background_color": "",
-        "padding-block-start": 64,
-        "padding-block-end": 64
+        "padding-block-start": 72,
+        "padding-block-end": 72
       }
     },
     "cm_find": {
@@ -326,7 +330,7 @@
           "type": "place",
           "settings": {
             "place": "Marina Mall",
-            "detail": "Kuwait",
+            "detail": "Now open",
             "link": "https://share.google/dFt4rg99IotL3AptY"
           }
         },
@@ -351,7 +355,7 @@
           "settings": {
             "place": "Private events",
             "detail": "Book",
-            "link": ""
+            "link": "https://www.instagram.com/callingmarilyn/"
           }
         }
       },
@@ -365,7 +369,7 @@
         "heading": "Where next?",
         "intro": "Catch the Photobooth Bus around Kuwait — malls, pop-ups, and private nights.",
         "view_more_label": "View more",
-        "view_more_link": "",
+        "view_more_link": "/pages/locations",
         "cta_label": "Follow for drop pins",
         "cta_link": "https://www.instagram.com/callingmarilyn/",
         "cta_new_tab": true

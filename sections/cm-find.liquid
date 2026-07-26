@@ -43,18 +43,27 @@
     <ul class="cm-find__list" role="list">
       {% for block in section.blocks %}
         <li class="cm-find__item" {{ block.shopify_attributes }}>
+          {% liquid
+            assign stop_num = forloop.index
+            if forloop.index < 10
+              assign stop_num = forloop.index | prepend: '0'
+            endif
+            assign status_chip = block.settings.detail
+          %}
           {% if block.settings.link != blank %}
             <a class="cm-find__link" href="{{ block.settings.link }}">
+              <span class="cm-find__stop" aria-hidden="true">{{ stop_num }}</span>
               <span class="cm-find__place">{{ block.settings.place }}</span>
-              {% if block.settings.detail != blank %}
-                <span class="cm-find__detail">{{ block.settings.detail }}</span>
+              {% if status_chip != blank %}
+                <span class="cm-find__detail">{{ status_chip }}</span>
               {% endif %}
             </a>
           {% else %}
             <div class="cm-find__link cm-find__link--static">
+              <span class="cm-find__stop" aria-hidden="true">{{ stop_num }}</span>
               <span class="cm-find__place">{{ block.settings.place }}</span>
-              {% if block.settings.detail != blank %}
-                <span class="cm-find__detail">{{ block.settings.detail }}</span>
+              {% if status_chip != blank %}
+                <span class="cm-find__detail">{{ status_chip }}</span>
               {% endif %}
             </div>
           {% endif %}
@@ -111,7 +120,7 @@
   .cm-find__cta {
     justify-self: start;
     padding: 0.85rem 1.25rem;
-    border: 1px solid var(--cm-burgundy);
+    border: 1px solid var(--cm-gold-deep);
     background: transparent;
     color: var(--cm-burgundy);
     font-family: var(--font-subheading--family);
@@ -120,13 +129,13 @@
     letter-spacing: 0.14em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: background 180ms ease, color 180ms ease;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
   }
 
   .cm-find__cta--primary {
     background: var(--cm-burgundy);
     color: var(--cm-cream);
-    border-color: var(--cm-burgundy);
+    border-color: var(--cm-gold);
   }
 
   .cm-find__cta:hover {
@@ -153,32 +162,52 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--cm-taupe);
+    display: grid;
+    gap: 0.75rem;
   }
 
   .cm-find__item {
-    border-bottom: 1px solid var(--cm-taupe);
+    border: none;
   }
 
   .cm-find__link {
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1rem;
-    align-items: baseline;
-    padding-block: 1.15rem;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.85rem 1rem;
+    align-items: center;
+    padding: 1rem 1.1rem;
     color: inherit;
     text-decoration: none;
-    transition: color 160ms ease, padding-inline-start 160ms ease;
+    background: var(--cm-cream);
+    border: 1px solid color-mix(in srgb, var(--cm-gold) 55%, var(--cm-taupe));
+    border-inline-start: 3px solid var(--cm-burgundy);
+    background-image: radial-gradient(
+      circle at left center,
+      transparent 4px,
+      var(--cm-cream) 5px
+    );
+    background-size: 12px 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: color 160ms ease, transform 160ms ease, border-color 160ms ease;
   }
 
   .cm-find__link:not(.cm-find__link--static):hover {
     color: var(--cm-red);
-    padding-inline-start: 0.5rem;
+    transform: translateX(4px);
+    border-color: var(--cm-gold);
   }
 
   .cm-find__link:focus-visible {
     outline: 3px solid var(--cm-red);
     outline-offset: 2px;
+  }
+
+  .cm-find__stop {
+    font-family: var(--font-subheading--family);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--cm-gold-deep);
   }
 
   .cm-find__place {
@@ -189,10 +218,14 @@
 
   .cm-find__detail {
     font-family: var(--font-subheading--family);
-    font-size: 0.72rem;
-    letter-spacing: 0.16em;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--cm-ink) 55%, transparent);
+    color: var(--cm-cream);
+    background: var(--cm-burgundy);
+    border: 1px solid var(--cm-gold);
+    padding: 0.35rem 0.55rem;
+    white-space: nowrap;
   }
 
   .cm-find__view-more {

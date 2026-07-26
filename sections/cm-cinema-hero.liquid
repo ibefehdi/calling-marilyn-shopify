@@ -60,17 +60,33 @@
       <p class="cm-hero__tagline">{{ hero_tagline }}</p>
     {% endif %}
 
-    {% if cta_label != blank %}
-      <a
-        class="cm-hero__cta"
-        href="{{ cta_link | default: routes.root_url }}"
-        {% if section.settings.cta_new_tab %}
-          target="_blank"
-          rel="noopener noreferrer"
+    {% if cta_label != blank or section.settings.cta_secondary_label != blank %}
+      <div class="cm-hero__actions">
+        {% if cta_label != blank %}
+          <a
+            class="cm-hero__cta"
+            href="{{ cta_link | default: routes.root_url }}"
+            {% if section.settings.cta_new_tab %}
+              target="_blank"
+              rel="noopener noreferrer"
+            {% endif %}
+          >
+            {{ cta_label }}
+          </a>
         {% endif %}
-      >
-        {{ cta_label }}
-      </a>
+        {% if section.settings.cta_secondary_label != blank %}
+          <a
+            class="cm-hero__cta cm-hero__cta--secondary"
+            href="{{ section.settings.cta_secondary_link | default: 'https://www.instagram.com/callingmarilyn/' }}"
+            {% if section.settings.cta_secondary_new_tab %}
+              target="_blank"
+              rel="noopener noreferrer"
+            {% endif %}
+          >
+            {{ section.settings.cta_secondary_label }}
+          </a>
+        {% endif %}
+      </div>
     {% endif %}
   </div>
 </section>
@@ -202,11 +218,17 @@
     color: color-mix(in srgb, var(--cm-cream) 88%, transparent);
   }
 
+  .cm-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-start: 0.5rem;
+  }
+
   .cm-hero__cta {
     justify-self: start;
-    margin-block-start: 0.5rem;
     padding: 0.9rem 1.4rem;
-    border: 1px solid var(--cm-cream);
+    border: 1px solid var(--cm-gold);
     background: var(--cm-red);
     color: var(--cm-cream);
     font-family: var(--font-subheading--family);
@@ -218,10 +240,22 @@
     transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
   }
 
+  .cm-hero__cta--secondary {
+    background: transparent;
+    color: var(--cm-cream);
+    border-color: color-mix(in srgb, var(--cm-cream) 75%, var(--cm-gold));
+  }
+
   .cm-hero__cta:hover {
     background: var(--cm-cream);
     color: var(--cm-burgundy);
-    border-color: var(--cm-cream);
+    border-color: var(--cm-gold);
+  }
+
+  .cm-hero__cta--secondary:hover {
+    background: color-mix(in srgb, var(--cm-cream) 18%, transparent);
+    color: var(--cm-cream);
+    border-color: var(--cm-gold);
   }
 
   .cm-hero__cta:focus-visible {
@@ -303,6 +337,27 @@
       "id": "cta_new_tab",
       "label": "Open link in new tab",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Secondary button"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary button label",
+      "default": "Stay in frame"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_secondary_new_tab",
+      "label": "Open secondary link in new tab",
+      "default": true
     },
     {
       "type": "range",

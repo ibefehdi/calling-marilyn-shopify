@@ -6,7 +6,7 @@
           {% for block in section.blocks %}
             <span class="cm-ticker__item" {{ block.shopify_attributes }}>
               <span class="cm-ticker__text">{{ block.settings.text }}</span>
-              <span class="cm-ticker__dot" aria-hidden="true">●</span>
+              <span class="cm-ticker__dot" aria-hidden="true">◆</span>
             </span>
           {% endfor %}
         </div>
@@ -19,7 +19,7 @@
   .cm-ticker {
     background: var(--cm-red);
     color: var(--cm-cream);
-    border-block: 1px solid color-mix(in srgb, var(--cm-ink) 25%, transparent);
+    border-block: 1px solid color-mix(in srgb, var(--cm-gold) 70%, transparent);
     overflow: hidden;
   }
 
@@ -58,7 +58,8 @@
 
   .cm-ticker__dot {
     font-size: 0.45rem;
-    opacity: 0.7;
+    opacity: 0.85;
+    color: var(--cm-gold);
   }
 
   @keyframes cm-ticker-scroll {
