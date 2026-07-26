@@ -1,0 +1,122 @@
+<section class="cm-ticker" aria-label="{{ section.settings.aria_label | default: 'Brand ticker' }}">
+  <div class="cm-ticker__viewport">
+    <div class="cm-ticker__track">
+      {% for i in (1..2) %}
+        <div class="cm-ticker__group" {% if i == 2 %}aria-hidden="true"{% endif %}>
+          {% for block in section.blocks %}
+            <span class="cm-ticker__item" {{ block.shopify_attributes }}>
+              <span class="cm-ticker__text">{{ block.settings.text }}</span>
+              <span class="cm-ticker__dot" aria-hidden="true">●</span>
+            </span>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .cm-ticker {
+    background: var(--cm-red);
+    color: var(--cm-cream);
+    border-block: 1px solid color-mix(in srgb, var(--cm-ink) 25%, transparent);
+    overflow: hidden;
+  }
+
+  .cm-ticker__viewport {
+    overflow: hidden;
+  }
+
+  .cm-ticker__track {
+    display: flex;
+    width: max-content;
+    animation: cm-ticker-scroll 32s linear infinite;
+  }
+
+  .cm-ticker__group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+    padding-inline-end: 1.5rem;
+  }
+
+  .cm-ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    white-space: nowrap;
+  }
+
+  .cm-ticker__text {
+    font-family: var(--font-subheading--family);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .cm-ticker__dot {
+    font-size: 0.45rem;
+    opacity: 0.7;
+  }
+
+  @keyframes cm-ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-ticker__track {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Ticker",
+  "tag": "section",
+  "class": "section-cm-ticker",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Accessibility label",
+      "default": "Brand ticker"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Calling Marilyn"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Ticker",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Photobooth Bus" } },
+        { "type": "item", "settings": { "text": "Kuwait" } },
+        { "type": "item", "settings": { "text": "Instant memories" } },
+        { "type": "item", "settings": { "text": "Classic Marilyn" } },
+        { "type": "item", "settings": { "text": "Pop-ups & private events" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

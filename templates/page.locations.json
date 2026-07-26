@@ -1,0 +1,103 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "cm_locations": {
+      "type": "cm-locations",
+      "blocks": {
+        "loc1": {
+          "type": "location",
+          "settings": {
+            "place": "Marina Mall",
+            "status": "Now",
+            "area": "Kuwait City",
+            "address": "Marina Mall, Arabian Gulf Road",
+            "latitude": "29.3886",
+            "longitude": "48.0046",
+            "note": "Catch the Photobooth.",
+            "map_link": "",
+            "featured": true
+          }
+        },
+        "loc2": {
+          "type": "location",
+          "settings": {
+            "place": "Thuraya Mall",
+            "status": "Rotating",
+            "area": "South Surra",
+            "address": "Salem Al Mubarak Street, Salmiya",
+            "latitude": "29.2997",
+            "longitude": "47.9406",
+            "note": "Seasonal takeovers and weekend drops.",
+            "map_link": "",
+            "featured": false
+          }
+        },
+        "loc3": {
+          "type": "location",
+          "settings": {
+            "place": "Assima Mall",
+            "status": "Kuwait",
+            "area": "Kuwait City",
+            "address": "Assima Mall",
+            "latitude": "29.3759",
+            "longitude": "47.9900",
+            "note": "Follow Instagram for live drop pins.",
+            "map_link": "",
+            "featured": false
+          }
+        },
+        "location_qW9myE": {
+          "type": "location",
+          "settings": {
+            "place": "Promenade Mall",
+            "status": "Kuwait",
+            "area": "Kuwait City",
+            "address": "Assima Mall",
+            "latitude": "29.3470",
+            "longitude": "48.0120",
+            "note": "Follow Instagram for live drop pins.",
+            "map_link": "",
+            "featured": false
+          }
+        },
+        "loc4": {
+          "type": "location",
+          "settings": {
+            "place": "Private events",
+            "status": "Book",
+            "area": "Kuwait & beyond",
+            "address": "Weddings, launches, and celebrations",
+            "latitude": "",
+            "longitude": "",
+            "note": "Bring Calling Marilyn to your guest list.",
+            "map_link": "",
+            "featured": false
+          }
+        }
+      },
+      "block_order": [
+        "loc1",
+        "loc2",
+        "loc3",
+        "location_qW9myE",
+        "loc4"
+      ],
+      "settings": {
+        "eyebrow": "Calling Marilyn",
+        "heading": "Locations",
+        "intro": "Find the Photobooth Bus across Kuwait — permanent spots, pop-ups, and private bookings."
+      }
+    }
+  },
+  "order": [
+    "cm_locations"
+  ]
+}

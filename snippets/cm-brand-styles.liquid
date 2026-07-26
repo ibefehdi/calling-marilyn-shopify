@@ -1,0 +1,16 @@
+{% doc %}
+  Injects Calling Marilyn brand surface styles and palette-backed CSS variables.
+{% enddoc %}
+
+{% style %}
+  :root {
+    --cm-cream: {{ settings.color_palette.background }};
+    --cm-ink: {{ settings.color_palette.foreground }};
+    --cm-red: {{ settings.palette_primary_button_background | default: settings.color_palette.color1 }};
+    --cm-burgundy: {{ settings.color_palette.color1 }};
+    --cm-blush: {{ settings.color_palette.color2 }};
+    --cm-taupe: {{ settings.color_palette.color3 }};
+  }
+{% endstyle %}
+
+{{ 'cm-brand.css' | asset_url | stylesheet_tag }}

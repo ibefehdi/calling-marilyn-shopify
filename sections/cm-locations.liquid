@@ -1,0 +1,611 @@
+{% liquid
+  assign eyebrow = section.settings.eyebrow
+  assign heading = section.settings.heading
+  assign intro = section.settings.intro
+%}
+
+<section class="cm-locations" aria-labelledby="cm-locations-heading-{{ section.id }}">
+  <header class="cm-locations__header">
+    {% if eyebrow != blank %}
+      <p class="cm-locations__eyebrow">{{ eyebrow }}</p>
+    {% endif %}
+    {% if heading != blank %}
+      <h1 class="cm-locations__heading" id="cm-locations-heading-{{ section.id }}">{{ heading }}</h1>
+    {% else %}
+      <h1 class="cm-locations__heading" id="cm-locations-heading-{{ section.id }}">{{ page.title }}</h1>
+    {% endif %}
+    {% if intro != blank %}
+      <p class="cm-locations__intro">{{ intro }}</p>
+    {% endif %}
+  </header>
+
+  <ol class="cm-locations__list" role="list">
+    {% for block in section.blocks %}
+      {% liquid
+        assign place = block.settings.place
+        assign status = block.settings.status
+        assign address = block.settings.address
+        assign area = block.settings.area
+        assign note = block.settings.note
+        assign map_link = block.settings.map_link
+        assign latitude = block.settings.latitude | strip
+        assign longitude = block.settings.longitude | strip
+        assign has_coords = false
+        if latitude != blank and longitude != blank
+          assign has_coords = true
+          assign lat_num = latitude | plus: 0
+          assign lng_num = longitude | plus: 0
+          assign lat_abs = lat_num | abs
+          assign lng_abs = lng_num | abs
+          if lat_num >= 0
+            assign lat_hemisphere = 'N'
+          else
+            assign lat_hemisphere = 'S'
+          endif
+          if lng_num >= 0
+            assign lng_hemisphere = 'E'
+          else
+            assign lng_hemisphere = 'W'
+          endif
+          if map_link == blank
+            assign map_link = 'https://www.google.com/maps?q=' | append: latitude | append: ',' | append: longitude
+          endif
+        endif
+        assign index_label = forloop.index | prepend: '0' | slice: -2, 2
+        if forloop.index > 9
+          assign index_label = forloop.index
+        endif
+      %}
+
+      <li
+        class="cm-locations__item{% if block.settings.featured %} cm-locations__item--featured{% endif %}"
+        {{ block.shopify_attributes }}
+      >
+        <div class="cm-locations__index" aria-hidden="true">{{ index_label }}</div>
+
+        <div class="cm-locations__media">
+          {% if block.settings.image != blank %}
+            {% liquid
+              assign location_alt = block.settings.image.alt | default: place
+            %}
+            {{
+              block.settings.image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'cm-locations__img',
+                loading: 'lazy',
+                sizes: '(min-width: 900px) 36vw, 100vw',
+                widths: '480, 720, 960, 1200',
+                alt: location_alt
+            }}
+          {% else %}
+            <div class="cm-locations__placeholder" aria-hidden="true">
+              <span class="cm-locations__placeholder-mark">{{ place | slice: 0 }}</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="cm-locations__body">
+          {% if status != blank %}
+            <p class="cm-locations__status">{{ status }}</p>
+          {% endif %}
+
+          <h2 class="cm-locations__place">{{ place }}</h2>
+
+          {% if area != blank %}
+            <p class="cm-locations__area">{{ area }}</p>
+          {% endif %}
+
+          {% if address != blank %}
+            <p class="cm-locations__address">{{ address }}</p>
+          {% endif %}
+
+          {% if has_coords %}
+            <div class="cm-locations__coords">
+              <div class="cm-locations__coords-mark" aria-hidden="true">
+                <span class="cm-locations__coords-crosshair"></span>
+              </div>
+              <p class="cm-locations__coords-label" id="cm-coords-label-{{ block.id }}">Coordinates</p>
+              <dl class="cm-locations__coords-grid" aria-labelledby="cm-coords-label-{{ block.id }}">
+                <div class="cm-locations__coord">
+                  <dt class="cm-locations__coord-axis">Lat</dt>
+                  <dd class="cm-locations__coord-value">
+                    <span class="cm-locations__coord-num">{{ lat_abs }}°</span>
+                    <span class="cm-locations__coord-hem">{{ lat_hemisphere }}</span>
+                  </dd>
+                </div>
+                <div class="cm-locations__coord">
+                  <dt class="cm-locations__coord-axis">Long</dt>
+                  <dd class="cm-locations__coord-value">
+                    <span class="cm-locations__coord-num">{{ lng_abs }}°</span>
+                    <span class="cm-locations__coord-hem">{{ lng_hemisphere }}</span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          {% endif %}
+
+          {% if note != blank %}
+            <p class="cm-locations__note">{{ note }}</p>
+          {% endif %}
+
+          {% if map_link != blank %}
+            <a class="cm-locations__map" href="{{ map_link }}" target="_blank" rel="noopener noreferrer">
+              View on map
+            </a>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% stylesheet %}
+  .cm-locations {
+    width: min(100% - 2.5rem, 72rem);
+    margin-inline: auto;
+    padding-block: clamp(3rem, 8vw, 5.5rem) clamp(4rem, 10vw, 7rem);
+  }
+
+  .cm-locations__header {
+    display: grid;
+    gap: 0.85rem;
+    max-width: 36rem;
+    margin-block-end: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .cm-locations__eyebrow {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-locations__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    line-height: 0.92;
+    color: var(--cm-ink);
+  }
+
+  .cm-locations__intro {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--cm-ink) 75%, transparent);
+  }
+
+  .cm-locations__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .cm-locations__item {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: clamp(1.5rem, 4vw, 2.5rem);
+    border-top: 1px solid var(--cm-taupe);
+    position: relative;
+  }
+
+  .cm-locations__item:last-child {
+    border-bottom: 1px solid var(--cm-taupe);
+  }
+
+  .cm-locations__index {
+    font-family: var(--font-accent--family);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1;
+    color: var(--cm-red);
+  }
+
+  .cm-locations__media {
+    overflow: hidden;
+    border: 1px solid var(--cm-taupe);
+    background: var(--cm-blush);
+    aspect-ratio: 4 / 3;
+  }
+
+  .cm-locations__img,
+  .cm-locations__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.04) saturate(0.9);
+  }
+
+  .cm-locations__placeholder {
+    display: grid;
+    place-items: center;
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--cm-red) 55%, black), var(--cm-burgundy));
+  }
+
+  .cm-locations__placeholder-mark {
+    font-family: var(--font-heading--family);
+    font-size: 4rem;
+    color: color-mix(in srgb, var(--cm-cream) 55%, transparent);
+  }
+
+  .cm-locations__body {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+  }
+
+  .cm-locations__status {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-locations__place {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 1;
+    color: var(--cm-ink);
+  }
+
+  .cm-locations__area {
+    margin: 0;
+    font-family: var(--font-accent--family);
+    font-size: 1.45rem;
+    line-height: 1.1;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-locations__address {
+    margin: 0;
+    max-width: 34ch;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--cm-ink) 78%, transparent);
+  }
+
+  .cm-locations__coords {
+    --cm-coords-gap: 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.85rem;
+    row-gap: 0.45rem;
+    align-items: start;
+    margin-block-start: 0.55rem;
+    padding-block: 0.85rem;
+    border-block: 1px solid color-mix(in srgb, var(--cm-taupe) 85%, transparent);
+    max-width: 28rem;
+  }
+
+  .cm-locations__coords-mark {
+    grid-row: 1 / span 2;
+    align-self: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    display: grid;
+    place-items: center;
+    color: var(--cm-red);
+  }
+
+  .cm-locations__coords-crosshair {
+    position: relative;
+    width: 0.55rem;
+    height: 0.55rem;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    display: block;
+    box-sizing: content-box;
+  }
+
+  .cm-locations__coords-crosshair::before,
+  .cm-locations__coords-crosshair::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+  }
+
+  .cm-locations__coords-crosshair::before {
+    width: 1px;
+    height: 1.15rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cm-locations__coords-crosshair::after {
+    width: 1.15rem;
+    height: 1px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cm-locations__coords-label {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-locations__coords-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--cm-coords-gap);
+  }
+
+  .cm-locations__coord {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .cm-locations__coord-axis {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--cm-ink) 55%, transparent);
+  }
+
+  .cm-locations__coord-value {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    font-family: var(--font-accent--family);
+    color: var(--cm-ink);
+    line-height: 1;
+  }
+
+  .cm-locations__coord-num {
+    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cm-locations__coord-hem {
+    font-family: var(--font-subheading--family);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--cm-red);
+  }
+
+  .cm-locations__note {
+    margin: 0.35rem 0 0;
+    max-width: 40ch;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--cm-ink) 65%, transparent);
+  }
+
+  @media (prefers-contrast: more) {
+    .cm-locations__coords {
+      border-block-color: var(--cm-ink);
+    }
+
+    .cm-locations__coord-axis {
+      color: var(--cm-ink);
+    }
+
+    .cm-locations__coord-hem {
+      color: var(--cm-burgundy);
+    }
+  }
+
+  .cm-locations__map {
+    justify-self: start;
+    margin-block-start: 0.65rem;
+    padding: 0.75rem 1.1rem;
+    border: 1px solid var(--cm-burgundy);
+    color: var(--cm-burgundy);
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 180ms ease, color 180ms ease;
+  }
+
+  .cm-locations__map:hover {
+    background: var(--cm-burgundy);
+    color: var(--cm-cream);
+  }
+
+  .cm-locations__map:focus-visible {
+    outline: 3px solid var(--cm-red);
+    outline-offset: 3px;
+  }
+
+  .cm-locations__item--featured .cm-locations__media {
+    border-color: var(--cm-red);
+  }
+
+  @media screen and (min-width: 900px) {
+    .cm-locations__item {
+      grid-template-columns: 4.5rem 1fr 1.05fr;
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .cm-locations__item:nth-child(even) .cm-locations__media {
+      order: 3;
+    }
+
+    .cm-locations__item:nth-child(even) .cm-locations__body {
+      order: 2;
+    }
+
+    .cm-locations__media {
+      aspect-ratio: 5 / 4;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Locations",
+  "tag": "section",
+  "class": "section-cm-locations",
+  "max_blocks": 24,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Calling Marilyn"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Locations"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Find the Photobooth Bus across Kuwait — permanent spots, pop-ups, and private bookings."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "location",
+      "name": "Location",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "place",
+          "label": "Place name",
+          "default": "Marina Mall"
+        },
+        {
+          "type": "text",
+          "id": "status",
+          "label": "Status",
+          "default": "Now"
+        },
+        {
+          "type": "text",
+          "id": "area",
+          "label": "Area / city",
+          "default": "Kuwait City"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Address / location",
+          "default": "Marina Mall, Arabian Gulf Road"
+        },
+        {
+          "type": "text",
+          "id": "latitude",
+          "label": "Latitude",
+          "info": "Decimal degrees, e.g. 29.3886"
+        },
+        {
+          "type": "text",
+          "id": "longitude",
+          "label": "Longitude",
+          "info": "Decimal degrees, e.g. 48.0046"
+        },
+        {
+          "type": "textarea",
+          "id": "note",
+          "label": "Note",
+          "default": "Walk-ins welcome while the bus is on site."
+        },
+        {
+          "type": "url",
+          "id": "map_link",
+          "label": "Map link",
+          "info": "Optional. If blank, uses latitude/longitude."
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured location",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Locations",
+      "blocks": [
+        {
+          "type": "location",
+          "settings": {
+            "place": "Marina Mall",
+            "status": "Now",
+            "area": "Kuwait City",
+            "address": "Marina Mall, Arabian Gulf Road",
+            "latitude": "29.3886",
+            "longitude": "48.0046",
+            "note": "Catch the Photobooth Bus while it's parked on site.",
+            "featured": true
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "place": "360 Mall",
+            "status": "Rotating",
+            "area": "South Surra",
+            "address": "360 Mall, 6th Ring Road",
+            "latitude": "29.2997",
+            "longitude": "47.9406",
+            "note": "Seasonal takeovers and weekend drops."
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "place": "Assima Mall",
+            "status": "Kuwait",
+            "area": "Kuwait City",
+            "address": "Assima Mall",
+            "latitude": "29.3759",
+            "longitude": "47.9900",
+            "note": "Follow Instagram for live drop pins."
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "place": "Private events",
+            "status": "Book",
+            "area": "Kuwait & beyond",
+            "address": "Weddings, launches, and celebrations",
+            "note": "Bring Calling Marilyn to your guest list."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

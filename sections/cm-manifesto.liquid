@@ -1,0 +1,170 @@
+{% liquid
+  assign quote = section.settings.quote
+  assign attribution = section.settings.attribution
+  assign body = section.settings.body
+  assign label = section.settings.label
+%}
+
+<section class="cm-manifesto" aria-labelledby="cm-manifesto-heading-{{ section.id }}">
+  <div class="cm-manifesto__panel cm-manifesto__panel--quote">
+    {% if label != blank %}
+      <p class="cm-manifesto__label">{{ label }}</p>
+    {% endif %}
+    <blockquote class="cm-manifesto__quote" id="cm-manifesto-heading-{{ section.id }}">
+      <p>{{ quote }}</p>
+    </blockquote>
+    {% if attribution != blank %}
+      <cite class="cm-manifesto__cite">{{ attribution }}</cite>
+    {% endif %}
+  </div>
+
+  <div class="cm-manifesto__panel cm-manifesto__panel--story">
+    {% if section.settings.image != blank %}
+      {% liquid
+        assign manifesto_alt = section.settings.image.alt | default: shop.name
+      %}
+      <div class="cm-manifesto__media">
+        {{
+          section.settings.image
+          | image_url: width: 1400
+          | image_tag:
+            class: 'cm-manifesto__img',
+            loading: 'lazy',
+            sizes: '(min-width: 900px) 42vw, 100vw',
+            widths: '600, 900, 1200, 1400',
+            alt: manifesto_alt
+        }}
+      </div>
+    {% endif %}
+    {% if body != blank %}
+      <div class="cm-manifesto__body rte">{{ body }}</div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .cm-manifesto {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: min(80svh, 52rem);
+  }
+
+  .cm-manifesto__panel {
+    display: grid;
+    align-content: center;
+    gap: 1.25rem;
+    padding: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .cm-manifesto__panel--quote {
+    background: var(--cm-burgundy);
+    color: var(--cm-cream);
+  }
+
+  .cm-manifesto__panel--story {
+    background: var(--cm-cream);
+    color: var(--cm-ink);
+    gap: 1.75rem;
+  }
+
+  .cm-manifesto__label {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .cm-manifesto__quote {
+    margin: 0;
+  }
+
+  .cm-manifesto__quote p {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.1rem, 5.5vw, 4.25rem);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .cm-manifesto__cite {
+    font-family: var(--font-accent--family);
+    font-size: 1.6rem;
+    font-style: normal;
+    color: color-mix(in srgb, var(--cm-cream) 85%, var(--cm-blush));
+  }
+
+  .cm-manifesto__media {
+    overflow: hidden;
+    border: 1px solid var(--cm-taupe);
+  }
+
+  .cm-manifesto__img {
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.04) saturate(0.92);
+  }
+
+  .cm-manifesto__body {
+    max-width: 38ch;
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .cm-manifesto__body p {
+    margin-block: 0 1rem;
+  }
+
+  @media screen and (min-width: 900px) {
+    .cm-manifesto {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Manifesto",
+  "tag": "section",
+  "class": "section-cm-manifesto",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Our promise"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "An event lasts a day. A photo lasts forever."
+    },
+    {
+      "type": "text",
+      "id": "attribution",
+      "label": "Attribution",
+      "default": "Calling Marilyn"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Story",
+      "default": "<p>Premium photobooth moments across Kuwait — from mall takeovers to private celebrations — built for people who collect memories, not just photos.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Manifesto"
+    }
+  ]
+}
+{% endschema %}

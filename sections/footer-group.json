@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:names.footer",
+  "sections": {
+    "cm_footer": {
+      "type": "cm-footer",
+      "blocks": {
+        "ribbon_1": {
+          "type": "ribbon_item",
+          "settings": {
+            "text": "Four frames. Forever."
+          }
+        },
+        "ribbon_2": {
+          "type": "ribbon_item",
+          "settings": {
+            "text": "An event lasts a day. A photo lasts forever."
+          }
+        },
+        "ribbon_3": {
+          "type": "ribbon_item",
+          "settings": {
+            "text": "Calling Marilyn"
+          }
+        },
+        "ribbon_4": {
+          "type": "ribbon_item",
+          "settings": {
+            "text": "Kuwait & beyond"
+          }
+        },
+        "ribbon_5": {
+          "type": "ribbon_item",
+          "settings": {
+            "text": "Pop-ups & private nights"
+          }
+        },
+        "ribbon_6": {
+          "type": "ribbon_item",
+          "settings": {
+            "text": "Find the booth"
+          }
+        }
+      },
+      "block_order": [
+        "ribbon_1",
+        "ribbon_2",
+        "ribbon_3",
+        "ribbon_4",
+        "ribbon_5",
+        "ribbon_6"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "brand_name": "Calling Marilyn",
+        "logo_height": 72,
+        "tagline": "Be first to know where the Photobooth Bus is next.",
+        "primary_label": "Instagram",
+        "primary_link": "https://www.instagram.com/callingmarilyn/",
+        "primary_new_tab": true,
+        "secondary_label": "Find the booth",
+        "secondary_link": "",
+        "explore_heading": "Explore",
+        "explore_menu": "main-menu",
+        "book_heading": "Book",
+        "book_menu": "footer",
+        "show_newsletter": true,
+        "newsletter_label": "Drop alerts",
+        "newsletter_button": "Sign up",
+        "status_line": "Kuwait & beyond",
+        "show_policies": true
+      }
+    }
+  },
+  "order": [
+    "cm_footer"
+  ]
+}

@@ -1,0 +1,383 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "cm_cinema_hero": {
+      "type": "cm-cinema-hero",
+      "settings": {
+        "image": "shopify://shop_images/image.png",
+        "script_line": "",
+        "heading": "Calling Marilyn",
+        "tagline": "An event lasts a day. A photo lasts forever.",
+        "ribbon_text": "PHOTOS",
+        "cta_label": "Find Us",
+        "cta_link": "https://www.instagram.com/callingmarilyn/",
+        "cta_new_tab": true,
+        "overlay_opacity": 15
+      }
+    },
+    "cm_ticker": {
+      "type": "cm-ticker",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "text": "Artisian Booths"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "text": "Kuwait"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "text": "Instant memories"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "text": "Classic Marilyn"
+          }
+        },
+        "t5": {
+          "type": "item",
+          "settings": {
+            "text": "Pop-ups & private events"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
+      "settings": {
+        "aria_label": "Brand ticker"
+      }
+    },
+    "cm_photostrip": {
+      "type": "cm-photostrip",
+      "blocks": {
+        "f1": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/mariliyn1.png",
+            "caption": "one"
+          }
+        },
+        "f2": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/marilyn2.png",
+            "caption": "two"
+          }
+        },
+        "f3": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/marilyn4.png",
+            "caption": "three"
+          }
+        },
+        "f4": {
+          "type": "frame",
+          "settings": {
+            "image": "shopify://shop_images/marilyn3.png",
+            "caption": "four"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "eyebrow": "The booth",
+        "heading": "Four frames, Two Strips. Forever."
+      }
+    },
+    "cm_manifesto": {
+      "type": "cm-manifesto",
+      "settings": {
+        "label": "Our promise",
+        "quote": "An event lasts a day. A photo lasts forever.",
+        "attribution": "Calling Marilyn",
+        "body": "<p>Premium photobooth moments across Kuwait — from mall takeovers to private celebrations — built for people who collect memories, not just photos.</p>"
+      }
+    },
+    "cm_products": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text": {
+              "type": "_product-list-text",
+              "name": "t:names.collection_title",
+              "settings": {
+                "text": "<h2>Shop the moment</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-heading--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_list_button": {
+              "type": "_product-list-button",
+              "name": "t:names.product_list_button",
+              "settings": {
+                "label": "View all",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_list_text",
+            "product_list_button"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "portrait",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-heading--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 8,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "0.9rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery",
+            "product_title",
+            "price"
+          ]
+        }
+      },
+      "name": "Products",
+      "settings": {
+        "collection": "all",
+        "layout_type": "grid",
+        "carousel_on_mobile": true,
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 16,
+        "rows_gap": 28,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 28,
+        "background_color": "",
+        "padding-block-start": 64,
+        "padding-block-end": 64
+      }
+    },
+    "cm_find": {
+      "type": "cm-find",
+      "blocks": {
+        "p1": {
+          "type": "place",
+          "settings": {
+            "place": "Marina Mall",
+            "detail": "Kuwait",
+            "link": "https://share.google/dFt4rg99IotL3AptY"
+          }
+        },
+        "p2": {
+          "type": "place",
+          "settings": {
+            "place": "Thuraya Mall",
+            "detail": "Kuwait",
+            "link": "https://share.google/OfOyhu3zdSZoAuhtB"
+          }
+        },
+        "p3": {
+          "type": "place",
+          "settings": {
+            "place": "Assima Mall",
+            "detail": "Kuwait",
+            "link": "https://share.google/3F4YP7AalRAsvVuRE"
+          }
+        },
+        "p4": {
+          "type": "place",
+          "settings": {
+            "place": "Private events",
+            "detail": "Book",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "heading": "Where next?",
+        "intro": "Catch the Photobooth Bus around Kuwait — malls, pop-ups, and private nights.",
+        "view_more_label": "View more",
+        "view_more_link": "",
+        "cta_label": "Follow for drop pins",
+        "cta_link": "https://www.instagram.com/callingmarilyn/",
+        "cta_new_tab": true
+      }
+    }
+  },
+  "order": [
+    "cm_cinema_hero",
+    "cm_ticker",
+    "cm_photostrip",
+    "cm_manifesto",
+    "cm_products",
+    "cm_find"
+  ]
+}

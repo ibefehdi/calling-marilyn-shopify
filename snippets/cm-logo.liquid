@@ -1,0 +1,53 @@
+{% doc %}
+  Renders the Calling Marilyn brand logo, preferring theme settings.logo
+  and falling back to the bundled asset.
+
+  @param {string} [class] - CSS class for the image
+  @param {number} [height] - Display height in px
+  @param {string} [style] - Inline styles
+  @param {string} [alt] - Alt text
+
+  @example
+  {% render 'cm-logo', height: 40, class: 'header-logo__image' %}
+{% enddoc %}
+
+{% liquid
+  assign logo_height = height | default: settings.logo_height | default: 40
+  assign logo_alt = alt | default: shop.name
+  assign logo_class = class | default: 'cm-logo'
+%}
+
+{% if settings.logo != blank %}
+  {% liquid
+    assign logo_width = logo_height | times: settings.logo.aspect_ratio | ceil
+    assign style_value = style | default: ''
+    assign style_value = style_value | append: '--header-logo-image-width: ' | append: logo_width | append: 'px;'
+    assign style_value = style_value | append: '--header-logo-image-height: ' | append: logo_height | append: 'px;'
+  %}
+  {{
+    settings.logo
+    | image_url: height: logo_height
+    | image_tag:
+      class: logo_class,
+      alt: logo_alt,
+      style: style_value,
+      heights: logo_height,
+      loading: 'eager'
+  }}
+{% else %}
+  {% liquid
+    assign asset_ratio = 1024.0 | divided_by: 213.0
+    assign logo_width = logo_height | times: asset_ratio | ceil
+    assign style_value = style | default: ''
+    assign style_value = style_value | append: 'width: ' | append: logo_width | append: 'px; height: ' | append: logo_height | append: 'px;'
+  %}
+  <img
+    src="{{ 'cm-logo.png' | asset_url }}"
+    class="{{ logo_class }}"
+    alt="{{ logo_alt | escape }}"
+    width="{{ logo_width }}"
+    height="{{ logo_height }}"
+    style="{{ style_value }}"
+    loading="eager"
+  >
+{% endif %}
