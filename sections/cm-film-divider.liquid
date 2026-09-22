@@ -1,0 +1,86 @@
+{% liquid
+  assign hole = section.settings.hole_color | default: '#B8955A' | remove: '#'
+  assign bg = section.settings.background_color
+%}
+
+<section
+  class="cm-film-divider"
+  aria-hidden="true"
+  style="
+    --cm-film-pad-y: {{ section.settings.padding_y }}px;
+    --cm-film-height: {{ section.settings.strip_height }}px;
+    {% if bg != blank %}--cm-film-bg: {{ bg }};{% endif %}
+    --cm-film-sprocket: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2748%27 height=%2716%27 viewBox=%270 0 48 16%27%3E%3Crect x=%274%27 y=%274%27 width=%278%27 height=%278%27 rx=%271%27 fill=%27%23{{ hole }}%27 fill-opacity=%270.7%27/%3E%3Crect x=%2720%27 y=%274%27 width=%278%27 height=%278%27 rx=%271%27 fill=%27%23{{ hole }}%27 fill-opacity=%270.7%27/%3E%3Crect x=%2736%27 y=%274%27 width=%278%27 height=%278%27 rx=%271%27 fill=%27%23{{ hole }}%27 fill-opacity=%270.7%27/%3E%3C/svg%3E');
+  "
+>
+  <div class="cm-film-divider__strip"></div>
+</section>
+
+{% stylesheet %}
+  .cm-film-divider {
+    --cm-film-bg: transparent;
+    --cm-film-pad-y: 8px;
+    --cm-film-height: 16px;
+    padding-block: var(--cm-film-pad-y);
+  }
+
+  .cm-film-divider__strip {
+    display: block;
+    height: var(--cm-film-height);
+    width: min(100% - 2.5rem, 70rem);
+    margin-inline: auto;
+    background-color: var(--cm-film-bg);
+    background-image: var(--cm-film-sprocket);
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: 48px 16px;
+    opacity: 0.9;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM film divider",
+  "tag": "section",
+  "class": "section-cm-film-divider",
+  "settings": [
+    {
+      "type": "range",
+      "id": "strip_height",
+      "label": "Strip height",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Strip background",
+      "info": "Leave blank for transparent (matches page)."
+    },
+    {
+      "type": "color",
+      "id": "hole_color",
+      "label": "Sprocket color",
+      "default": "#B8955A"
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM film divider"
+    }
+  ]
+}
+{% endschema %}

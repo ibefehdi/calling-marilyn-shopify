@@ -57,6 +57,47 @@
     ]
   },
   {
+    "name": "Brand accents",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Accent colors and default social links used by Calling Marilyn sections. Main palette colors are under Color palette."
+      },
+      {
+        "type": "header",
+        "content": "Accent colors"
+      },
+      {
+        "type": "color",
+        "id": "cm_gold",
+        "label": "Accent gold",
+        "default": "#B8955A"
+      },
+      {
+        "type": "color",
+        "id": "cm_gold_deep",
+        "label": "Accent gold (deep)",
+        "default": "#8F7340"
+      },
+      {
+        "type": "header",
+        "content": "Social defaults"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram_url",
+        "label": "Instagram URL",
+        "info": "Used when a section’s Instagram / social link is left blank."
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_label",
+        "label": "Instagram label",
+        "default": "Instagram"
+      }
+    ]
+  },
+  {
     "name": "t:names.colors",
     "settings": [
       {

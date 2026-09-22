@@ -1,13 +1,34 @@
-<section class="cm-ticker" aria-label="{{ section.settings.aria_label | default: 'Brand ticker' }}">
+{% liquid
+  assign speed = section.settings.speed | default: 32
+  assign bg = section.settings.background_color
+  assign fg = section.settings.text_color
+  assign dot = section.settings.dot_color
+%}
+
+<section
+  class="cm-ticker{% if section.settings.enable_animation == false %} cm-ticker--static{% endif %}"
+  aria-label="{{ section.settings.aria_label | default: 'Brand ticker' }}"
+  style="
+    --cm-ticker-speed: {{ speed }}s;
+    --cm-ticker-pad-y: {{ section.settings.padding_y }}px;
+    {% if bg != blank %}--cm-ticker-bg: {{ bg }};{% endif %}
+    {% if fg != blank %}--cm-ticker-fg: {{ fg }};{% endif %}
+    {% if dot != blank %}--cm-ticker-dot: {{ dot }};{% endif %}
+  "
+>
   <div class="cm-ticker__viewport">
     <div class="cm-ticker__track">
       {% for i in (1..2) %}
         <div class="cm-ticker__group" {% if i == 2 %}aria-hidden="true"{% endif %}>
           {% for block in section.blocks %}
-            <span class="cm-ticker__item" {{ block.shopify_attributes }}>
-              <span class="cm-ticker__text">{{ block.settings.text }}</span>
-              <span class="cm-ticker__dot" aria-hidden="true">◆</span>
-            </span>
+            {% if block.settings.text != blank %}
+              <span class="cm-ticker__item" {{ block.shopify_attributes }}>
+                <span class="cm-ticker__text">{{ block.settings.text }}</span>
+                {% if section.settings.show_separator %}
+                  <span class="cm-ticker__dot" aria-hidden="true">{{ section.settings.separator | default: '◆' }}</span>
+                {% endif %}
+              </span>
+            {% endif %}
           {% endfor %}
         </div>
       {% endfor %}
@@ -17,8 +38,11 @@
 
 {% stylesheet %}
   .cm-ticker {
-    background: var(--cm-red);
-    color: var(--cm-cream);
+    --cm-ticker-bg: var(--cm-red);
+    --cm-ticker-fg: var(--cm-on-red);
+    --cm-ticker-dot: var(--cm-on-red);
+    background: var(--cm-ticker-bg);
+    color: var(--cm-ticker-fg);
     border-block: 1px solid color-mix(in srgb, var(--cm-gold) 70%, transparent);
     overflow: hidden;
   }
@@ -30,14 +54,18 @@
   .cm-ticker__track {
     display: flex;
     width: max-content;
-    animation: cm-ticker-scroll 32s linear infinite;
+    animation: cm-ticker-scroll var(--cm-ticker-speed, 32s) linear infinite;
+  }
+
+  .cm-ticker--static .cm-ticker__track {
+    animation: none;
   }
 
   .cm-ticker__group {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    padding-block: 0.85rem;
+    padding-block: var(--cm-ticker-pad-y, 0.85rem);
     padding-inline-end: 1.5rem;
   }
 
@@ -59,7 +87,7 @@
   .cm-ticker__dot {
     font-size: 0.45rem;
     opacity: 0.85;
-    color: var(--cm-gold);
+    color: var(--cm-ticker-dot);
   }
 
   @keyframes cm-ticker-scroll {
@@ -84,13 +112,80 @@
   "name": "CM Ticker",
   "tag": "section",
   "class": "section-cm-ticker",
-  "max_blocks": 10,
+  "max_blocks": 16,
   "settings": [
     {
       "type": "text",
       "id": "aria_label",
       "label": "Accessibility label",
       "default": "Brand ticker"
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "Scroll animation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll duration",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "s",
+      "default": 32,
+      "info": "Higher = slower",
+      "visible_if": "{{ section.settings.enable_animation == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "Show separators",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "◆",
+      "visible_if": "{{ section.settings.show_separator == true }}"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "info": "Leave blank to use brand red."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "info": "Leave blank to use brand cream."
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Separator color",
+      "info": "Leave blank to use brand gold."
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Vertical padding",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 14
     }
   ],
   "blocks": [

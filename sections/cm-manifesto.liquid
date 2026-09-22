@@ -3,50 +3,72 @@
   assign attribution = section.settings.attribution
   assign body = section.settings.body
   assign label = section.settings.label
+  assign layout = section.settings.layout | default: 'quote_first'
+  assign quote_bg = section.settings.quote_background
+  assign quote_fg = section.settings.quote_text_color
+  assign story_bg = section.settings.story_background
+  assign show_image = section.settings.show_image
 %}
 
-<section class="cm-manifesto" aria-labelledby="cm-manifesto-heading-{{ section.id }}">
+<section
+  class="cm-manifesto cm-manifesto--{{ layout }}"
+  aria-labelledby="cm-manifesto-heading-{{ section.id }}"
+  style="
+    --cm-manifesto-pad: {{ section.settings.panel_padding }}px;
+    {% if quote_bg != blank %}--cm-manifesto-quote-bg: {{ quote_bg }};{% endif %}
+    {% if quote_fg != blank %}--cm-manifesto-quote-fg: {{ quote_fg }};{% endif %}
+    {% if story_bg != blank %}--cm-manifesto-story-bg: {{ story_bg }};{% endif %}
+  "
+>
   <div class="cm-manifesto__panel cm-manifesto__panel--quote">
     {% if label != blank %}
       <p class="cm-manifesto__label">{{ label }}</p>
     {% endif %}
-    <blockquote class="cm-manifesto__quote" id="cm-manifesto-heading-{{ section.id }}">
-      <p>{{ quote }}</p>
-    </blockquote>
-    <div class="cm-manifesto__rule" aria-hidden="true"></div>
+    {% if quote != blank %}
+      <blockquote class="cm-manifesto__quote" id="cm-manifesto-heading-{{ section.id }}">
+        <p>{{ quote }}</p>
+      </blockquote>
+    {% else %}
+      <h2 class="visually-hidden" id="cm-manifesto-heading-{{ section.id }}">{{ shop.name }}</h2>
+    {% endif %}
+    {% if section.settings.show_rule %}
+      <div class="cm-manifesto__rule" aria-hidden="true"></div>
+    {% endif %}
     {% if attribution != blank %}
       <cite class="cm-manifesto__cite">{{ attribution }}</cite>
     {% endif %}
   </div>
 
   <div class="cm-manifesto__panel cm-manifesto__panel--story">
-    {% if section.settings.image != blank %}
-      {% liquid
-        assign manifesto_alt = section.settings.image.alt | default: shop.name
-      %}
-      <div class="cm-manifesto__media">
-        {{
-          section.settings.image
-          | image_url: width: 1400
-          | image_tag:
-            class: 'cm-manifesto__img',
-            loading: 'lazy',
-            sizes: '(min-width: 900px) 42vw, 100vw',
-            widths: '600, 900, 1200, 1400',
-            alt: manifesto_alt
-        }}
-      </div>
-    {% else %}
-      <div class="cm-manifesto__media">
-        <img
-          class="cm-manifesto__img"
-          src="{{ 'cm-hero-banner.png' | asset_url }}"
-          alt="{{ shop.name | escape }}"
-          width="1400"
-          height="960"
-          loading="lazy"
-        >
-      </div>
+    {% if show_image %}
+      {% if section.settings.image != blank %}
+        {% liquid
+          assign manifesto_alt = section.settings.image.alt | default: section.settings.image_alt | default: shop.name
+        %}
+        <div class="cm-manifesto__media">
+          {{
+            section.settings.image
+            | image_url: width: 1400
+            | image_tag:
+              class: 'cm-manifesto__img',
+              loading: 'lazy',
+              sizes: '(min-width: 900px) 42vw, 100vw',
+              widths: '600, 900, 1200, 1400',
+              alt: manifesto_alt
+          }}
+        </div>
+      {% elsif section.settings.use_fallback_image %}
+        <div class="cm-manifesto__media">
+          <img
+            class="cm-manifesto__img"
+            src="{{ 'cm-hero-banner.png' | asset_url }}"
+            alt="{{ section.settings.image_alt | default: shop.name | escape }}"
+            width="1400"
+            height="960"
+            loading="lazy"
+          >
+        </div>
+      {% endif %}
     {% endif %}
     {% if body != blank %}
       <div class="cm-manifesto__body rte">{{ body }}</div>
@@ -56,25 +78,32 @@
 
 {% stylesheet %}
   .cm-manifesto {
+    --cm-manifesto-quote-bg: var(--cm-burgundy);
+    --cm-manifesto-quote-fg: var(--cm-on-red);
+    --cm-manifesto-story-bg: var(--cm-cream);
     display: grid;
     grid-template-columns: 1fr;
     min-height: min(80svh, 52rem);
+  }
+
+  .cm-manifesto--story_first .cm-manifesto__panel--story {
+    order: -1;
   }
 
   .cm-manifesto__panel {
     display: grid;
     align-content: center;
     gap: 1.25rem;
-    padding: clamp(2.5rem, 7vw, 5rem);
+    padding: var(--cm-manifesto-pad, clamp(2.5rem, 7vw, 5rem));
   }
 
   .cm-manifesto__panel--quote {
-    background: var(--cm-burgundy);
-    color: var(--cm-cream);
+    background: var(--cm-manifesto-quote-bg);
+    color: var(--cm-manifesto-quote-fg);
   }
 
   .cm-manifesto__panel--story {
-    background: var(--cm-cream);
+    background: var(--cm-manifesto-story-bg);
     color: var(--cm-ink);
     gap: 1.75rem;
   }
@@ -110,7 +139,7 @@
     font-family: var(--font-accent--family);
     font-size: 1.6rem;
     font-style: normal;
-    color: color-mix(in srgb, var(--cm-cream) 85%, var(--cm-blush));
+    color: color-mix(in srgb, var(--cm-manifesto-quote-fg) 85%, var(--cm-blush));
   }
 
   .cm-manifesto__media {
@@ -142,6 +171,18 @@
     .cm-manifesto {
       grid-template-columns: 1.05fr 0.95fr;
     }
+
+    .cm-manifesto--story_first {
+      grid-template-columns: 0.95fr 1.05fr;
+    }
+
+    .cm-manifesto--story_first .cm-manifesto__panel--story {
+      order: 0;
+    }
+
+    .cm-manifesto--story_first .cm-manifesto__panel--quote {
+      order: 1;
+    }
   }
 {% endstylesheet %}
 
@@ -170,15 +211,91 @@
       "default": "Calling Marilyn"
     },
     {
+      "type": "checkbox",
+      "id": "show_rule",
+      "label": "Show gold rule",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Story panel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
       "type": "image_picker",
       "id": "image",
-      "label": "Image"
+      "label": "Image",
+      "visible_if": "{{ section.settings.show_image == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_fallback_image",
+      "label": "Use theme fallback image",
+      "default": true,
+      "visible_if": "{{ section.settings.show_image == true }}"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "visible_if": "{{ section.settings.show_image == true }}"
     },
     {
       "type": "richtext",
       "id": "body",
       "label": "Story",
       "default": "<p>Premium photobooth moments across Kuwait — from mall takeovers to private celebrations — built for people who collect memories, not just photos.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "quote_first", "label": "Quote left / story right" },
+        { "value": "story_first", "label": "Story left / quote right" }
+      ],
+      "default": "quote_first"
+    },
+    {
+      "type": "range",
+      "id": "panel_padding",
+      "label": "Panel padding",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "quote_background",
+      "label": "Quote background",
+      "info": "Leave blank for brand burgundy."
+    },
+    {
+      "type": "color",
+      "id": "quote_text_color",
+      "label": "Quote text",
+      "info": "Leave blank for brand cream."
+    },
+    {
+      "type": "color",
+      "id": "story_background",
+      "label": "Story background",
+      "info": "Leave blank for brand cream."
     }
   ],
   "presets": [

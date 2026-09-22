@@ -1,0 +1,1027 @@
+{% liquid
+  assign form_id = 'cm-drop-' | append: section.id
+  assign success_title_suggestion = section.settings.success_title_suggestion | default: 'Suggestion received'
+  assign success_title_custom = section.settings.success_title_custom | default: 'Request received'
+  assign success_message_suggestion = section.settings.success_message_suggestion | default: 'Thanks for the idea — we’ll take a look.'
+  assign success_message_custom = section.settings.success_message_custom | default: 'Got it — we’ll follow up about your booth.'
+  assign helper_suggestion = section.settings.helper_suggestion | default: 'Ideas for the brand — not a booking.'
+  assign helper_custom = section.settings.helper_custom | default: 'Request a booth at your space.'
+  assign submit_suggestion = section.settings.submit_label_suggestion | default: 'Send suggestion'
+  assign submit_custom = section.settings.submit_label_custom | default: 'Request custom booth'
+  assign placeholder_suggestion = section.settings.placeholder_suggestion | default: 'Share your idea…'
+  assign placeholder_custom = section.settings.placeholder_custom | default: 'Tell us about the event, vibe, and timing…'
+  assign about_label = section.settings.label_about | default: 'About'
+  assign about_merch = section.settings.about_merch | default: 'Merch'
+  assign about_locations = section.settings.about_locations | default: 'Locations'
+  assign about_experience = section.settings.about_experience | default: 'Booth experience'
+  assign about_other = section.settings.about_other | default: 'Other'
+
+  if section.settings.suggestion_background != blank
+    assign suggestion_bg = section.settings.suggestion_background
+    assign suggestion_bg_alt = suggestion_bg.alt | default: 'Little Miss wants to drop a suggestion'
+  endif
+
+  assign bg = section.settings.background_color
+%}
+
+<section
+  class="cm-drop"
+  id="{{ section.settings.anchor_id | default: 'drop' | handleize }}"
+  aria-labelledby="cm-drop-heading-{{ section.id }}"
+  data-cm-drop-type="custom"
+  data-cm-drop-section
+  style="
+    --cm-drop-pad-top: {{ section.settings.padding_top }}px;
+    --cm-drop-pad-bottom: {{ section.settings.padding_bottom }}px;
+    {% if bg != blank %}--cm-drop-surface: {{ bg }};{% endif %}
+  "
+>
+  <div class="cm-drop__inner">
+    <div class="cm-drop__aside">
+      <header class="cm-drop__header">
+        {% if section.settings.eyebrow != blank %}
+          <p class="cm-drop__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="cm-drop__heading" id="cm-drop-heading-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {% else %}
+          <h2 class="visually-hidden" id="cm-drop-heading-{{ section.id }}">Drop</h2>
+        {% endif %}
+        {% if section.settings.intro != blank %}
+          <p class="cm-drop__intro">{{ section.settings.intro }}</p>
+        {% endif %}
+      </header>
+
+      <div class="cm-drop__art" data-cm-drop-art hidden>
+        {% if suggestion_bg != blank %}
+          {{
+            suggestion_bg
+            | image_url: width: 900
+            | image_tag:
+              class: 'cm-drop__art-img',
+              loading: 'lazy',
+              widths: '400, 600, 900',
+              alt: suggestion_bg_alt
+          }}
+        {% else %}
+          <img
+            class="cm-drop__art-img"
+            src="{{ 'cm-drop-suggestion.png' | asset_url }}"
+            alt=""
+            width="600"
+            height="800"
+            loading="lazy"
+            decoding="async"
+          >
+        {% endif %}
+      </div>
+    </div>
+
+    <cm-drop-form class="cm-drop__panel" data-cm-drop>
+      {% form 'contact', id: form_id, class: 'cm-drop__form' %}
+        <input type="hidden" name="contact[id]" value="{{ form_id }}">
+        <input type="hidden" name="contact[tags]" value="drop-form">
+
+        {% liquid
+          assign form_matches = false
+          if form.id == form_id or form.id == blank
+            assign form_matches = true
+          endif
+        %}
+
+        {% if form.errors and form_matches %}
+          <div class="cm-drop__banner cm-drop__banner--error" role="alert" tabindex="-1">
+            <h3 class="cm-drop__banner-title" tabindex="-1">Please check the form</h3>
+            <p>{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          </div>
+        {% endif %}
+
+        {% if form.posted_successfully? and form_matches %}
+          <div class="cm-drop__banner cm-drop__banner--success" role="status" tabindex="-1" id="cm-drop-success-{{ section.id }}">
+            <h3 class="cm-drop__banner-title" tabindex="-1" data-cm-drop-success-title>{{ success_title_custom }}</h3>
+            <p data-cm-drop-success-body>{{ success_message_custom }}</p>
+          </div>
+          <script>
+            requestAnimationFrame(() => {
+              document.getElementById('cm-drop-success-{{ section.id }}')?.focus();
+            });
+          </script>
+        {% endif %}
+
+        <fieldset class="cm-drop__types">
+          <legend class="cm-drop__legend">{{ section.settings.type_legend | default: 'What are you dropping?' }}</legend>
+          <div class="cm-drop__type-row" role="radiogroup" aria-label="{{ section.settings.type_legend | default: 'What are you dropping?' }}">
+            <label class="cm-drop__type">
+              <input type="radio" name="contact[Request type]" value="Custom photobooth" data-cm-drop-type="custom" checked>
+              <span>{{ section.settings.label_custom | default: 'Custom booth' }}</span>
+            </label>
+            <label class="cm-drop__type">
+              <input type="radio" name="contact[Request type]" value="Suggestion" data-cm-drop-type="suggestion">
+              <span>{{ section.settings.label_suggestion | default: 'Suggestion' }}</span>
+            </label>
+          </div>
+          <p
+            class="cm-drop__helper"
+            data-cm-drop-helper
+            data-helper-suggestion="{{ helper_suggestion | escape }}"
+            data-helper-custom="{{ helper_custom | escape }}"
+          >
+            {{ helper_custom }}
+          </p>
+        </fieldset>
+
+        <div class="cm-drop__fields">
+          <div class="cm-drop__row">
+            <p class="cm-drop__field">
+              <label class="cm-drop__label" for="cm-drop-name-{{ section.id }}">
+                {{ section.settings.label_name | default: 'Name' }}
+              </label>
+              <input
+                class="cm-drop__input"
+                id="cm-drop-name-{{ section.id }}"
+                type="text"
+                name="contact[name]"
+                autocomplete="name"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              >
+            </p>
+            <p class="cm-drop__field">
+              <label class="cm-drop__label" for="cm-drop-email-{{ section.id }}">
+                {{ section.settings.label_email | default: 'Email' }}
+                <span class="cm-drop__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="cm-drop__input"
+                id="cm-drop-email-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                aria-required="true"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                {% if form.errors contains 'email' and form_matches %}
+                  aria-invalid="true"
+                {% endif %}
+              >
+            </p>
+          </div>
+
+          <p class="cm-drop__field">
+            <label class="cm-drop__label" for="cm-drop-phone-{{ section.id }}">
+              {{ section.settings.label_phone | default: 'Phone' }}
+            </label>
+            <input
+              class="cm-drop__input"
+              id="cm-drop-phone-{{ section.id }}"
+              type="tel"
+              name="contact[phone]"
+              autocomplete="tel"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            >
+          </p>
+
+          <div class="cm-drop__suggestion" data-cm-drop-panel="suggestion" hidden>
+            <p class="cm-drop__panel-note">{{ helper_suggestion }}</p>
+            <p class="cm-drop__field">
+              <label class="cm-drop__label" for="cm-drop-about-{{ section.id }}">{{ about_label }}</label>
+              <select
+                class="cm-drop__input cm-drop__select"
+                id="cm-drop-about-{{ section.id }}"
+                name="contact[Suggestion about]"
+                data-cm-drop-suggestion-field
+                disabled
+              >
+                <option value="">{{ section.settings.about_placeholder | default: 'Choose a topic' }}</option>
+                <option value="{{ about_merch | escape }}">{{ about_merch }}</option>
+                <option value="{{ about_locations | escape }}">{{ about_locations }}</option>
+                <option value="{{ about_experience | escape }}">{{ about_experience }}</option>
+                <option value="{{ about_other | escape }}">{{ about_other }}</option>
+              </select>
+            </p>
+          </div>
+
+          <div class="cm-drop__custom" data-cm-drop-panel="custom">
+            <p class="cm-drop__panel-note">{{ helper_custom }}</p>
+            <p class="cm-drop__field">
+              <label class="cm-drop__label" for="cm-drop-space-{{ section.id }}">
+                {{ section.settings.label_space | default: 'Space / venue' }}
+              </label>
+              <input
+                class="cm-drop__input"
+                id="cm-drop-space-{{ section.id }}"
+                type="text"
+                name="contact[Space]"
+                data-cm-drop-custom-field
+              >
+            </p>
+            <div class="cm-drop__row">
+              <p class="cm-drop__field">
+                <label class="cm-drop__label" for="cm-drop-area-{{ section.id }}">
+                  {{ section.settings.label_area | default: 'Area / city' }}
+                </label>
+                <input
+                  class="cm-drop__input"
+                  id="cm-drop-area-{{ section.id }}"
+                  type="text"
+                  name="contact[Area]"
+                  data-cm-drop-custom-field
+                >
+              </p>
+              <p class="cm-drop__field">
+                <label class="cm-drop__label" for="cm-drop-date-{{ section.id }}">
+                  {{ section.settings.label_date | default: 'Preferred date' }}
+                </label>
+                <input
+                  class="cm-drop__input"
+                  id="cm-drop-date-{{ section.id }}"
+                  type="text"
+                  name="contact[Preferred date]"
+                  placeholder="e.g. 12 Sep"
+                  data-cm-drop-custom-field
+                >
+              </p>
+            </div>
+            <p class="cm-drop__field">
+              <label class="cm-drop__label" for="cm-drop-guests-{{ section.id }}">
+                {{ section.settings.label_guests | default: 'Approx. guests' }}
+              </label>
+              <input
+                class="cm-drop__input"
+                id="cm-drop-guests-{{ section.id }}"
+                type="text"
+                name="contact[Guests]"
+                data-cm-drop-custom-field
+              >
+            </p>
+          </div>
+
+          <p class="cm-drop__field">
+            <label class="cm-drop__label" for="cm-drop-body-{{ section.id }}">
+              <span
+                data-cm-drop-body-label
+                data-label-suggestion="{{ section.settings.label_body_suggestion | default: 'Your suggestion' | escape }}"
+                data-label-custom="{{ section.settings.label_body_custom | default: 'Tell us about the event' | escape }}"
+              >
+                {{ section.settings.label_body_custom | default: 'Tell us about the event' }}
+              </span>
+            </label>
+            <textarea
+              class="cm-drop__input cm-drop__input--textarea"
+              id="cm-drop-body-{{ section.id }}"
+              name="contact[body]"
+              rows="6"
+              required
+              aria-required="true"
+              data-cm-drop-body
+              data-placeholder-suggestion="{{ placeholder_suggestion | escape }}"
+              data-placeholder-custom="{{ placeholder_custom | escape }}"
+              placeholder="{{ placeholder_custom | escape }}"
+            >{{ form.body }}</textarea>
+          </p>
+        </div>
+
+        <button
+          class="cm-drop__submit"
+          type="submit"
+          data-cm-drop-submit
+          data-submit-suggestion="{{ submit_suggestion | escape }}"
+          data-submit-custom="{{ submit_custom | escape }}"
+        >
+          {{ submit_custom }}
+        </button>
+
+        <template data-cm-drop-success-copy>
+          <span
+            data-success-title-suggestion="{{ success_title_suggestion | escape }}"
+            data-success-title-custom="{{ success_title_custom | escape }}"
+            data-success-body-suggestion="{{ success_message_suggestion | escape }}"
+            data-success-body-custom="{{ success_message_custom | escape }}"
+          ></span>
+        </template>
+      {% endform %}
+    </cm-drop-form>
+  </div>
+</section>
+
+<script type="module">
+  class CmDropForm extends HTMLElement {
+    connectedCallback() {
+      this.section = this.closest('[data-cm-drop-section]');
+      this.form = this.querySelector('form');
+      this.art = this.section?.querySelector('[data-cm-drop-art]');
+      this.radios = this.querySelectorAll('[data-cm-drop-type]');
+      this.customPanel = this.querySelector('[data-cm-drop-panel="custom"]');
+      this.suggestionPanel = this.querySelector('[data-cm-drop-panel="suggestion"]');
+      this.customFields = this.querySelectorAll('[data-cm-drop-custom-field]');
+      this.suggestionFields = this.querySelectorAll('[data-cm-drop-suggestion-field]');
+      this.bodyLabel = this.querySelector('[data-cm-drop-body-label]');
+      this.body = this.querySelector('[data-cm-drop-body]');
+      this.helper = this.querySelector('[data-cm-drop-helper]');
+      this.submit = this.querySelector('[data-cm-drop-submit]');
+      this.successTitle = this.querySelector('[data-cm-drop-success-title]');
+      this.successBody = this.querySelector('[data-cm-drop-success-body]');
+      this.successCopy = this.querySelector('[data-cm-drop-success-copy] span');
+
+      this.form?.addEventListener('submit', () => {
+        const type = this.querySelector('[data-cm-drop-type]:checked')?.dataset.cmDropType || 'custom';
+        try {
+          sessionStorage.setItem('cm-drop-last-type', type);
+        } catch (e) {
+          /* ignore storage errors */
+        }
+      });
+
+      try {
+        const saved = sessionStorage.getItem('cm-drop-last-type');
+        if (saved && this.successTitle) {
+          const radio = this.querySelector(`[data-cm-drop-type="${saved}"]`);
+          if (radio) radio.checked = true;
+          sessionStorage.removeItem('cm-drop-last-type');
+        }
+      } catch (e) {
+        /* ignore storage errors */
+      }
+
+      this.radios.forEach((radio) => {
+        radio.addEventListener('change', () => this.syncType());
+      });
+      this.syncType();
+    }
+
+    syncType() {
+      const active = this.querySelector('[data-cm-drop-type]:checked');
+      const type = active?.dataset.cmDropType || 'custom';
+      const isCustom = type === 'custom';
+      const isSuggestion = type === 'suggestion';
+
+      if (this.section) {
+        this.section.dataset.cmDropType = type;
+      }
+
+      if (this.art) {
+        this.art.hidden = !isSuggestion;
+      }
+
+      if (this.customPanel) {
+        this.customPanel.hidden = !isCustom;
+      }
+      if (this.suggestionPanel) {
+        this.suggestionPanel.hidden = !isSuggestion;
+      }
+
+      this.customFields.forEach((field) => {
+        field.disabled = !isCustom;
+      });
+      this.suggestionFields.forEach((field) => {
+        field.disabled = !isSuggestion;
+      });
+
+      if (this.bodyLabel) {
+        const map = {
+          suggestion: this.bodyLabel.dataset.labelSuggestion,
+          custom: this.bodyLabel.dataset.labelCustom,
+        };
+        this.bodyLabel.textContent = map[type] || map.custom;
+      }
+
+      if (this.body) {
+        const placeholders = {
+          suggestion: this.body.dataset.placeholderSuggestion,
+          custom: this.body.dataset.placeholderCustom,
+        };
+        this.body.placeholder = placeholders[type] || placeholders.custom;
+      }
+
+      if (this.helper) {
+        const helpers = {
+          suggestion: this.helper.dataset.helperSuggestion,
+          custom: this.helper.dataset.helperCustom,
+        };
+        this.helper.textContent = helpers[type] || helpers.custom;
+      }
+
+      if (this.submit) {
+        const labels = {
+          suggestion: this.submit.dataset.submitSuggestion,
+          custom: this.submit.dataset.submitCustom,
+        };
+        this.submit.textContent = labels[type] || labels.custom;
+      }
+
+      if (this.successCopy && this.successTitle && this.successBody) {
+        const titles = {
+          suggestion: this.successCopy.dataset.successTitleSuggestion,
+          custom: this.successCopy.dataset.successTitleCustom,
+        };
+        const bodies = {
+          suggestion: this.successCopy.dataset.successBodySuggestion,
+          custom: this.successCopy.dataset.successBodyCustom,
+        };
+        this.successTitle.textContent = titles[type] || titles.custom;
+        this.successBody.textContent = bodies[type] || bodies.custom;
+      }
+    }
+  }
+
+  if (!customElements.get('cm-drop-form')) {
+    customElements.define('cm-drop-form', CmDropForm);
+  }
+</script>
+
+{% stylesheet %}
+  .cm-drop {
+    --cm-drop-surface: color-mix(in srgb, var(--cm-burgundy) 82%, #1a0506);
+    --cm-drop-ink: var(--cm-on-red);
+    --cm-drop-muted: color-mix(in srgb, var(--cm-on-red) 72%, transparent);
+    padding-block: var(--cm-drop-pad-top, 4.5rem) var(--cm-drop-pad-bottom, 4.5rem);
+    background: var(--cm-drop-surface);
+    color: var(--cm-drop-ink);
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  .cm-drop[data-cm-drop-type='suggestion'] {
+    --cm-drop-surface: color-mix(in srgb, var(--cm-blush) 42%, var(--cm-cream));
+    --cm-drop-ink: var(--cm-burgundy);
+    --cm-drop-muted: color-mix(in srgb, var(--cm-burgundy) 72%, transparent);
+  }
+
+  .cm-drop[data-cm-drop-type='custom'] {
+    --cm-drop-surface: color-mix(in srgb, var(--cm-burgundy) 82%, #1a0506);
+    --cm-drop-ink: var(--cm-on-red);
+    --cm-drop-muted: color-mix(in srgb, var(--cm-on-red) 72%, transparent);
+  }
+
+  .cm-drop__inner {
+    width: min(100% - 2.5rem, 70rem);
+    margin-inline: auto;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .cm-drop__aside {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  .cm-drop__header {
+    display: grid;
+    gap: 0.65rem;
+    max-width: 34rem;
+  }
+
+  .cm-drop__eyebrow {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cm-drop-muted);
+  }
+
+  .cm-drop__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    color: var(--cm-drop-ink);
+  }
+
+  .cm-drop__intro {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--cm-drop-muted);
+  }
+
+  .cm-drop__art {
+    max-width: 22rem;
+  }
+
+  .cm-drop__art[hidden] {
+    display: none;
+  }
+
+  .cm-drop__art-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .cm-drop__panel {
+    display: block;
+    background: var(--cm-cream);
+    color: var(--cm-ink);
+    border: 1px solid var(--cm-gold);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    box-shadow: 0 12px 40px color-mix(in srgb, #000 12%, transparent);
+  }
+
+  .cm-drop[data-cm-drop-type='suggestion'] .cm-drop__panel {
+    border-color: color-mix(in srgb, var(--cm-burgundy) 45%, var(--cm-gold));
+  }
+
+  .cm-drop[data-cm-drop-type='custom'] .cm-drop__panel {
+    border-color: color-mix(in srgb, var(--cm-gold) 80%, var(--cm-cream));
+  }
+
+  .cm-drop__form {
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .cm-drop__banner {
+    padding: 0.9rem 1rem;
+    border: 1px solid currentColor;
+  }
+
+  .cm-drop__banner--error {
+    color: var(--cm-red);
+    background: color-mix(in srgb, var(--cm-red) 8%, var(--cm-cream));
+  }
+
+  .cm-drop__banner--success {
+    color: var(--cm-burgundy);
+    background: color-mix(in srgb, var(--cm-blush) 45%, var(--cm-cream));
+  }
+
+  .cm-drop__banner-title {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.35rem;
+  }
+
+  .cm-drop__banner-title:focus {
+    outline: 3px solid var(--cm-burgundy);
+    outline-offset: 2px;
+  }
+
+  .cm-drop__banner p {
+    margin: 0;
+  }
+
+  .cm-drop__types {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .cm-drop__legend {
+    padding: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-drop__type-row {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .cm-drop__type {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem;
+    align-items: center;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--cm-gold) 55%, var(--cm-taupe));
+    cursor: pointer;
+    font-family: var(--font-heading--family);
+    font-size: 1.15rem;
+  }
+
+  .cm-drop__type:has(> input:checked) {
+    border-color: var(--cm-burgundy);
+    background: color-mix(in srgb, var(--cm-blush) 40%, var(--cm-cream));
+  }
+
+  .cm-drop__type:has(> input:focus-visible) {
+    outline: 3px solid var(--cm-red);
+    outline-offset: 2px;
+  }
+
+  .cm-drop__type input {
+    accent-color: var(--cm-burgundy);
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .cm-drop__helper {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: color-mix(in srgb, var(--cm-ink) 72%, transparent);
+  }
+
+  .cm-drop__fields {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .cm-drop__row {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .cm-drop__field {
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .cm-drop__label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-drop__required {
+    color: var(--cm-red);
+  }
+
+  .cm-drop__input {
+    width: 100%;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--cm-taupe);
+    background: var(--cm-cream);
+    color: var(--cm-ink);
+    font: inherit;
+  }
+
+  .cm-drop__select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--cm-burgundy) 50%),
+      linear-gradient(135deg, var(--cm-burgundy) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.15rem) calc(50% - 0.15rem),
+      calc(100% - 0.85rem) calc(50% - 0.15rem);
+    background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+    padding-inline-end: 2rem;
+  }
+
+  .cm-drop__input--textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+
+  .cm-drop__input:focus-visible {
+    outline: 3px solid var(--cm-burgundy);
+    outline-offset: 2px;
+    border-color: var(--cm-burgundy);
+  }
+
+  .cm-drop__suggestion,
+  .cm-drop__custom {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1rem;
+    border: 1px dashed color-mix(in srgb, var(--cm-gold) 70%, var(--cm-taupe));
+    background: color-mix(in srgb, var(--cm-blush) 28%, var(--cm-cream));
+  }
+
+  .cm-drop__custom {
+    border-style: solid;
+    background: color-mix(in srgb, var(--cm-burgundy) 6%, var(--cm-cream));
+  }
+
+  .cm-drop__suggestion[hidden],
+  .cm-drop__custom[hidden] {
+    display: none;
+  }
+
+  .cm-drop__panel-note {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cm-burgundy);
+  }
+
+  .cm-drop__submit {
+    justify-self: start;
+    padding: 0.95rem 1.35rem;
+    border: 1px solid var(--cm-gold);
+    background: var(--cm-burgundy);
+    color: var(--cm-on-red);
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .cm-drop[data-cm-drop-type='suggestion'] .cm-drop__submit {
+    border-color: var(--cm-burgundy);
+  }
+
+  .cm-drop__submit:hover {
+    filter: brightness(1.05);
+  }
+
+  .cm-drop__submit:focus-visible {
+    outline: 3px solid var(--cm-burgundy);
+    outline-offset: 3px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .cm-drop__type-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cm-drop__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    .cm-drop__inner {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: start;
+      gap: 3rem;
+    }
+
+    .cm-drop__art {
+      max-width: 26rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-drop {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Drop",
+  "tag": "section",
+  "class": "section-cm-drop",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Section ID",
+      "default": "drop"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Drop"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Drop us a line"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Leave a suggestion, or request a customized photobooth at your space."
+    },
+    {
+      "type": "header",
+      "content": "Suggestion art"
+    },
+    {
+      "type": "image_picker",
+      "id": "suggestion_background",
+      "label": "Suggestion illustration",
+      "info": "Shown beside the form when Suggestion is selected. Defaults to the theme sticker asset if empty."
+    },
+    {
+      "type": "header",
+      "content": "Type helpers"
+    },
+    {
+      "type": "text",
+      "id": "type_legend",
+      "label": "Type legend",
+      "default": "What are you dropping?"
+    },
+    {
+      "type": "text",
+      "id": "label_custom",
+      "label": "Custom booth option",
+      "default": "Custom booth"
+    },
+    {
+      "type": "text",
+      "id": "label_suggestion",
+      "label": "Suggestion option",
+      "default": "Suggestion"
+    },
+    {
+      "type": "text",
+      "id": "helper_custom",
+      "label": "Custom booth helper",
+      "default": "Request a booth at your space."
+    },
+    {
+      "type": "text",
+      "id": "helper_suggestion",
+      "label": "Suggestion helper",
+      "default": "Ideas for the brand — not a booking."
+    },
+    {
+      "type": "header",
+      "content": "Form labels"
+    },
+    {
+      "type": "text",
+      "id": "label_name",
+      "label": "Name label",
+      "default": "Name"
+    },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "Email label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "label_phone",
+      "label": "Phone label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "label_about",
+      "label": "Suggestion about label",
+      "default": "About"
+    },
+    {
+      "type": "text",
+      "id": "about_placeholder",
+      "label": "About placeholder",
+      "default": "Choose a topic"
+    },
+    {
+      "type": "text",
+      "id": "about_merch",
+      "label": "About: Merch",
+      "default": "Merch"
+    },
+    {
+      "type": "text",
+      "id": "about_locations",
+      "label": "About: Locations",
+      "default": "Locations"
+    },
+    {
+      "type": "text",
+      "id": "about_experience",
+      "label": "About: Booth experience",
+      "default": "Booth experience"
+    },
+    {
+      "type": "text",
+      "id": "about_other",
+      "label": "About: Other",
+      "default": "Other"
+    },
+    {
+      "type": "text",
+      "id": "label_space",
+      "label": "Space label",
+      "default": "Space / venue"
+    },
+    {
+      "type": "text",
+      "id": "label_area",
+      "label": "Area label",
+      "default": "Area / city"
+    },
+    {
+      "type": "text",
+      "id": "label_date",
+      "label": "Date label",
+      "default": "Preferred date"
+    },
+    {
+      "type": "text",
+      "id": "label_guests",
+      "label": "Guests label",
+      "default": "Approx. guests"
+    },
+    {
+      "type": "text",
+      "id": "label_body_custom",
+      "label": "Custom body label",
+      "default": "Tell us about the event"
+    },
+    {
+      "type": "text",
+      "id": "label_body_suggestion",
+      "label": "Suggestion body label",
+      "default": "Your suggestion"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_custom",
+      "label": "Custom placeholder",
+      "default": "Tell us about the event, vibe, and timing…"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_suggestion",
+      "label": "Suggestion placeholder",
+      "default": "Share your idea…"
+    },
+    {
+      "type": "header",
+      "content": "Submit & success"
+    },
+    {
+      "type": "text",
+      "id": "submit_label_custom",
+      "label": "Custom submit label",
+      "default": "Request custom booth"
+    },
+    {
+      "type": "text",
+      "id": "submit_label_suggestion",
+      "label": "Suggestion submit label",
+      "default": "Send suggestion"
+    },
+    {
+      "type": "text",
+      "id": "success_title_custom",
+      "label": "Custom success title",
+      "default": "Request received"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message_custom",
+      "label": "Custom success body",
+      "default": "Got it — we’ll follow up about your booth."
+    },
+    {
+      "type": "text",
+      "id": "success_title_suggestion",
+      "label": "Suggestion success title",
+      "default": "Suggestion received"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message_suggestion",
+      "label": "Suggestion success body",
+      "default": "Thanks for the idea — we’ll take a look."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "info": "Leave blank to keep the suggestion/custom mode colors."
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Drop"
+    }
+  ]
+}
+{% endschema %}

@@ -93,7 +93,16 @@
       "settings": {
         "eyebrow": "Calling Marilyn",
         "heading": "Locations",
-        "intro": "Find the Photobooth Bus across Kuwait — permanent spots, pop-ups, and private bookings."
+        "intro": "Find the Photobooth Bus across Kuwait — permanent spots, pop-ups, and private bookings.",
+        "show_coordinates": true,
+        "coords_label": "Coordinates",
+        "lat_label": "Lat",
+        "lng_label": "Long",
+        "map_label": "View on map",
+        "map_new_tab": true,
+        "content_width": 72,
+        "padding_top": 64,
+        "padding_bottom": 96
       }
     }
   },

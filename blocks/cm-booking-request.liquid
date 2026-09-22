@@ -1,0 +1,388 @@
+{% doc %}
+  Date and time request fields for booth and photobus bookings.
+  Values are saved as line item properties on the order.
+{% enddoc %}
+
+{% liquid
+  assign product = closest.product
+  assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
+  assign required_tag = block.settings.product_tag | strip
+  assign show_block = true
+
+  if required_tag != blank
+    assign show_block = false
+    if product.tags contains required_tag
+      assign show_block = true
+    endif
+  endif
+
+  assign today = 'now' | date: '%Y-%m-%d'
+  assign date_id = 'cm-booking-date-' | append: block.id
+  assign time_id = 'cm-booking-time-' | append: block.id
+  assign note_id = 'cm-booking-note-' | append: block.id
+  assign help_id = 'cm-booking-help-' | append: block.id
+  assign payment_id = 'cm-booking-payment-' | append: block.id
+  assign error_id = 'cm-booking-error-' | append: block.id
+  assign start_hour = block.settings.start_hour | default: 9
+  assign end_hour = block.settings.end_hour | default: 22
+%}
+
+{% if show_block %}
+  <cm-booking-request
+    class="cm-booking-request"
+    data-form-id="{{ product_form_id }}"
+    {{ block.shopify_attributes }}
+  >
+    {% if block.settings.heading != blank %}
+      <h3 class="cm-booking-request__heading">{{ block.settings.heading }}</h3>
+    {% endif %}
+
+    {% if block.settings.notice != blank %}
+      <p class="cm-booking-request__notice" id="{{ help_id }}">{{ block.settings.notice }}</p>
+    {% endif %}
+
+    <div
+      class="cm-booking-request__error"
+      id="{{ error_id }}"
+      role="alert"
+      aria-live="assertive"
+      hidden
+      ref="error"
+    >
+      <h3 class="cm-booking-request__error-heading" tabindex="-1" ref="errorHeading">
+        {{ block.settings.error_heading | default: 'Please choose a date and time' }}
+      </h3>
+      <p>{{ block.settings.error_text | default: 'Add a requested date and time so the team can follow up.' }}</p>
+    </div>
+
+    <div class="cm-booking-request__fields">
+      <p class="cm-booking-request__field">
+        <label class="cm-booking-request__label" for="{{ date_id }}">
+          {{ block.settings.date_label | default: 'Requested date' }}
+          <span class="cm-booking-request__required" aria-label="required">*</span>
+        </label>
+        <input
+          class="cm-booking-request__input"
+          id="{{ date_id }}"
+          ref="dateInput"
+          type="date"
+          name="properties[Requested date]"
+          form="{{ product_form_id }}"
+          min="{{ today }}"
+          autocomplete="off"
+          aria-required="true"
+          data-required="true"
+          aria-invalid="false"
+          aria-describedby="{{ help_id }} {{ error_id }}"
+        >
+      </p>
+
+      <p class="cm-booking-request__field">
+        <label class="cm-booking-request__label" for="{{ time_id }}">
+          {{ block.settings.time_label | default: 'Requested time' }}
+          <span class="cm-booking-request__required" aria-label="required">*</span>
+        </label>
+        <select
+          class="cm-booking-request__input"
+          id="{{ time_id }}"
+          ref="timeInput"
+          name="properties[Requested time]"
+          form="{{ product_form_id }}"
+          aria-required="true"
+          data-required="true"
+          aria-invalid="false"
+          aria-describedby="{{ help_id }} {{ error_id }}"
+        >
+          <option value="">{{ block.settings.time_placeholder | default: 'Choose a time' }}</option>
+          {% for hour in (start_hour..end_hour) %}
+            {% liquid
+              assign hour_padded = hour
+              if hour < 10
+                assign hour_padded = hour | prepend: '0'
+              endif
+            %}
+            <option value="{{ hour_padded }}:00">{{ hour_padded }}:00</option>
+            {% unless hour == end_hour %}
+              <option value="{{ hour_padded }}:30">{{ hour_padded }}:30</option>
+            {% endunless %}
+          {% endfor %}
+        </select>
+      </p>
+    </div>
+
+    {% if block.settings.show_note %}
+      <p class="cm-booking-request__field">
+        <label class="cm-booking-request__label" for="{{ note_id }}">
+          {{ block.settings.note_label | default: 'Event notes' }}
+        </label>
+        <textarea
+          class="cm-booking-request__input cm-booking-request__input--note"
+          id="{{ note_id }}"
+          name="properties[Event notes]"
+          form="{{ product_form_id }}"
+          rows="3"
+          maxlength="250"
+          aria-describedby="{{ note_id }}-help"
+          placeholder="{{ block.settings.note_placeholder | escape }}"
+        ></textarea>
+        <small class="cm-booking-request__help" id="{{ note_id }}-help">
+          {{ block.settings.note_help | default: 'Optional — location, guest count, or anything the team should know.' }}
+        </small>
+      </p>
+    {% endif %}
+
+    {% if block.settings.payment_notice != blank %}
+      <p class="cm-booking-request__payment" id="{{ payment_id }}">
+        {{ block.settings.payment_notice }}
+      </p>
+    {% endif %}
+  </cm-booking-request>
+{% endif %}
+
+<script
+  src="{{ 'cm-booking-request.js' | asset_url }}"
+  type="module"
+></script>
+
+{% stylesheet %}
+  .cm-booking-request {
+    display: grid;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  .cm-booking-request__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: var(--cm-ink, var(--color-foreground));
+  }
+
+  .cm-booking-request__notice {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--cm-ink, var(--color-foreground)) 75%, transparent);
+  }
+
+  .cm-booking-request__payment {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--cm-burgundy, var(--color-foreground));
+    background: color-mix(in srgb, var(--cm-blush, var(--color-background)) 40%, var(--cm-cream, var(--color-background)));
+    color: var(--cm-ink, var(--color-foreground));
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .cm-booking-request__error {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--cm-burgundy, var(--color-foreground));
+    background: color-mix(in srgb, var(--cm-blush, var(--color-background)) 55%, white);
+    color: var(--cm-ink, var(--color-foreground));
+  }
+
+  .cm-booking-request__error-heading {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+  }
+
+  .cm-booking-request__error-heading:focus {
+    outline: 3px solid var(--cm-burgundy, var(--color-foreground));
+    outline-offset: 2px;
+  }
+
+  .cm-booking-request__error p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  .cm-booking-request__fields {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .cm-booking-request__field {
+    margin: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .cm-booking-request__label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .cm-booking-request__required {
+    color: var(--cm-burgundy, var(--color-foreground));
+  }
+
+  .cm-booking-request__input {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--cm-taupe, var(--color-foreground));
+    border-radius: 0;
+    background: var(--cm-cream, var(--color-background));
+    color: var(--cm-ink, var(--color-foreground));
+    font: inherit;
+  }
+
+  .cm-booking-request__input:focus-visible {
+    outline: 3px solid var(--cm-burgundy, var(--color-foreground));
+    outline-offset: 2px;
+    border-color: var(--cm-burgundy, var(--color-foreground));
+  }
+
+  .cm-booking-request__input[aria-invalid='true'] {
+    border-color: var(--cm-burgundy, #4a1520);
+    border-width: 2px;
+  }
+
+  .cm-booking-request__input--note {
+    min-height: 5.5rem;
+    resize: vertical;
+  }
+
+  .cm-booking-request__help {
+    color: #495057;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  @media screen and (min-width: 750px) {
+    .cm-booking-request__fields {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .cm-booking-request__help {
+      color: #000000;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .cm-booking-request__input:focus-visible,
+    .cm-booking-request__error-heading:focus {
+      outline: 0.2rem solid transparent;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Booking request",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "product_tag",
+      "label": "Show on products tagged",
+      "default": "Book",
+      "info": "Leave blank to always show this block."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Request a date"
+    },
+    {
+      "type": "textarea",
+      "id": "notice",
+      "label": "Notice",
+      "default": "Pick a date and time that works for you. The team will contact you to finalize — this request is not a confirmed booking."
+    },
+    {
+      "type": "textarea",
+      "id": "payment_notice",
+      "label": "Payment notice",
+      "default": "No payment is due now. Our team will contact you to confirm payment and finalize your booking."
+    },
+    {
+      "type": "text",
+      "id": "date_label",
+      "label": "Date label",
+      "default": "Requested date"
+    },
+    {
+      "type": "text",
+      "id": "time_label",
+      "label": "Time label",
+      "default": "Requested time"
+    },
+    {
+      "type": "text",
+      "id": "time_placeholder",
+      "label": "Time placeholder",
+      "default": "Choose a time"
+    },
+    {
+      "type": "range",
+      "id": "start_hour",
+      "label": "Earliest hour",
+      "min": 0,
+      "max": 23,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "end_hour",
+      "label": "Latest hour",
+      "min": 0,
+      "max": 23,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "checkbox",
+      "id": "show_note",
+      "label": "Show event notes",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "note_label",
+      "label": "Notes label",
+      "default": "Event notes"
+    },
+    {
+      "type": "text",
+      "id": "note_placeholder",
+      "label": "Notes placeholder",
+      "default": "Location, guest count, or anything we should know…"
+    },
+    {
+      "type": "text",
+      "id": "note_help",
+      "label": "Notes help",
+      "default": "Optional — location, guest count, or anything the team should know."
+    },
+    {
+      "type": "text",
+      "id": "error_heading",
+      "label": "Error heading",
+      "default": "Please choose a date and time"
+    },
+    {
+      "type": "text",
+      "id": "error_text",
+      "label": "Error text",
+      "default": "Add a requested date and time so the team can follow up."
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Booking request"
+    }
+  ]
+}
+{% endschema %}

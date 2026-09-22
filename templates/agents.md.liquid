@@ -1,0 +1,36 @@
+# {{ agents.store_name }}
+
+> Premium photobooth experiences across Kuwait — book a booth, shop merch, or drop a custom request.
+> Website: {{ agents.store_url }}
+
+## About
+
+Calling Marilyn is a photobooth brand in Kuwait. Guests can reserve booths for parties and private nights, browse merch and keepsakes, and request pop-ups or custom setups.
+
+## Optional
+
+- Book a booth: {{ agents.store_url }}/#book
+- Shop: {{ agents.store_url }}/#shop
+- Drop a note: {{ agents.store_url }}/#drop
+- Locations: {{ agents.store_url }}/pages/locations
+- All products: {{ agents.store_url }}/collections/all
+- Product JSON: {{ agents.store_url }}/products/{handle}.json
+- Sitemap: {{ agents.sitemap_url }}
+
+Pricing and availability are returned in {{ agents.currency }}.
+
+## Commerce Protocol (UCP)
+
+This store implements the Universal Commerce Protocol for agent-driven commerce:
+
+- Discovery: `GET {{ agents.ucp_discovery_url }}`
+- MCP endpoint: `POST {{ agents.mcp_endpoint_url }}`
+
+### Supported UCP versions
+{% for version in agents.ucp_versions -%}
+- {{ version }}{% if forloop.first %} (latest stable){% endif %}
+{% endfor %}
+
+## Credits
+
+This Shopify storefront theme was created by [Fahad Asad](https://ibefehdi.com) at [ibefehdi.com](https://ibefehdi.com).

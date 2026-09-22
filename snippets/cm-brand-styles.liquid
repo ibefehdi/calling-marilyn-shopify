@@ -4,14 +4,15 @@
 
 {% style %}
   :root {
-    --cm-cream: {{ settings.color_palette.background }};
-    --cm-ink: {{ settings.color_palette.foreground }};
-    --cm-red: {{ settings.palette_primary_button_background | default: settings.color_palette.color1 }};
-    --cm-burgundy: {{ settings.color_palette.color1 }};
-    --cm-blush: {{ settings.color_palette.color2 }};
-    --cm-taupe: {{ settings.color_palette.color3 }};
-    --cm-gold: #b8955a;
-    --cm-gold-deep: #8f7340;
+    --cm-cream: {{ settings.color_palette.background | default: '#F3EBE3' }};
+    --cm-ink: {{ settings.color_palette.foreground | default: '#0A0A0A' }};
+    --cm-red: {{ settings.palette_primary_button_background | default: '#6B2030' }};
+    --cm-burgundy: {{ settings.color_palette.color1 | default: '#4A1520' }};
+    --cm-blush: {{ settings.color_palette.color2 | default: '#F0B6C6' }};
+    --cm-taupe: {{ settings.color_palette.color3 | default: '#C48A9A' }};
+    --cm-gold: {{ settings.cm_gold | default: '#B8955A' }};
+    --cm-gold-deep: {{ settings.cm_gold_deep | default: '#8F7340' }};
+    --cm-on-red: {{ settings.color_palette.background | default: '#F3EBE3' }};
   }
 {% endstyle %}
 

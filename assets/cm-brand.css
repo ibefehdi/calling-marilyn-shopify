@@ -34,6 +34,13 @@
   z-index: 0;
 }
 
+.cm-brand #book,
+.cm-brand #shop,
+.cm-brand #drop,
+.cm-brand #start {
+  scroll-margin-top: 6rem;
+}
+
 /* —— Buttons & forms —— */
 .cm-brand .button,
 .cm-brand .button-primary,
@@ -68,13 +75,51 @@
 }
 
 /* —— Header —— */
-.cm-brand .header__row {
-  backdrop-filter: blur(10px);
+/* Horizon paints the header via .header__underlay + --color-background-top-row */
+.cm-brand .header,
+.cm-brand #header-component {
+  --color-background-top-row: var(--cm-burgundy);
+  --color-background-bottom-row: var(--cm-burgundy);
+  --color-foreground: var(--cm-cream);
+  --color-background: var(--cm-burgundy);
+  --color-foreground-rgb: 243 235 227;
+  color: var(--cm-cream);
 }
 
-.cm-brand .header:not(.header--transparent) .header__row {
-  background: color-mix(in srgb, var(--cm-cream) 94%, transparent);
+.cm-brand .header__underlay-closed,
+.cm-brand .header__underlay-open {
+  background: var(--cm-burgundy) !important;
+}
+
+.cm-brand .header__row {
+  color: var(--cm-cream);
+  --color-foreground: var(--cm-cream);
   border-bottom: 1px solid color-mix(in srgb, var(--cm-gold) 55%, transparent);
+  backdrop-filter: none;
+}
+
+.cm-brand .header a,
+.cm-brand .header button,
+.cm-brand .header summary,
+.cm-brand .header .header-menu__link,
+.cm-brand .header .header-actions__action,
+.cm-brand .header .header__icon,
+.cm-brand .header .svg-wrapper,
+.cm-brand .header .header-logo__text,
+.cm-brand .header .header__heading,
+.cm-brand .header .header__heading-link {
+  color: var(--cm-cream);
+}
+
+.cm-brand .header svg,
+.cm-brand .header .svg-wrapper svg {
+  color: var(--cm-cream);
+  fill: currentColor;
+}
+
+.cm-brand .header-logo__image,
+.cm-brand .header .cm-logo {
+  filter: none;
 }
 
 .cm-brand .announcement-bar {
@@ -83,6 +128,12 @@
   --color-foreground: var(--cm-cream);
   --color-background: var(--cm-burgundy);
   box-shadow: inset 0 -2px 0 var(--cm-gold);
+}
+
+.cm-brand .announcement-bar a,
+.cm-brand .announcement-bar p,
+.cm-brand .announcement-bar span {
+  color: var(--cm-cream);
 }
 
 .cm-brand .header-logo__text,
@@ -104,6 +155,26 @@
 .cm-brand .header-menu__link:hover,
 .cm-brand .header-menu__link[aria-current='page'] {
   box-shadow: inset 0 -2px 0 var(--cm-gold);
+  color: var(--cm-cream);
+}
+
+/* Text/icons on brand red & burgundy surfaces */
+.cm-brand .button,
+.cm-brand .button-primary,
+.cm-brand .add-to-cart-button,
+.cm-brand .cm-hero__cta:not(.cm-hero__cta--secondary),
+.cm-brand .cm-find__cta--primary,
+.cm-brand .cm-find__detail,
+.cm-brand .cm-book__cta,
+.cm-brand .cm-shop__cta {
+  color: var(--cm-on-red);
+}
+
+.cm-brand .button,
+.cm-brand .button-primary,
+.cm-brand .add-to-cart-button {
+  background: var(--cm-burgundy);
+  border-color: var(--cm-burgundy);
 }
 
 /* —— Footer —— */
@@ -246,11 +317,14 @@
 .cm-brand #cart-drawer .theme-drawer__dialog {
   --color-background: var(--cm-burgundy);
   --color-foreground: var(--cm-cream);
+  --color-foreground-rgb: 243 235 227;
+  --color-foreground-subdued: color-mix(in srgb, var(--cm-cream) 88%, transparent);
+  --color-foreground-muted: color-mix(in srgb, var(--cm-cream) 80%, transparent);
   --color-primary-button-background: var(--cm-cream);
   --color-primary-button-text: var(--cm-burgundy);
   background: var(--cm-burgundy);
   color: var(--cm-cream);
-  border-inline-start: 2px solid var(--cm-gold);
+  border-inline-start: 2px solid var(--cm-cream);
 }
 
 .cm-brand .cart-drawer__content,
@@ -265,6 +339,23 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: 1rem;
+  color: var(--cm-cream);
+}
+
+.cm-brand #cart-drawer .theme-drawer__header,
+.cm-brand #cart-drawer .theme-drawer__close-button,
+.cm-brand #cart-drawer .theme-drawer__badge {
+  color: var(--cm-cream);
+}
+
+.cm-brand #cart-drawer .theme-drawer__close-button {
+  --private-button-border-color: color-mix(in srgb, var(--cm-cream) 35%, transparent);
+}
+
+.cm-brand #cart-drawer .theme-drawer__close-button svg,
+.cm-brand #cart-drawer .theme-drawer__close-button .svg-wrapper {
+  color: var(--cm-cream);
+  fill: currentColor;
 }
 
 .cm-brand .cart-drawer__items .cart-items__table-row {
@@ -275,8 +366,24 @@
   background: color-mix(in srgb, var(--cm-ink) 18%, var(--cm-burgundy));
 }
 
+.cm-brand #cart-drawer .cart-items__title,
+.cm-brand #cart-drawer .cart-items__price,
+.cm-brand #cart-drawer .cart-items__details a {
+  color: var(--cm-cream);
+}
+
+.cm-brand #cart-drawer .cart-items__details,
+.cm-brand #cart-drawer .cart-items__variants,
+.cm-brand #cart-drawer .cart-items__properties,
+.cm-brand #cart-drawer .cart-items__unit-price-wrapper,
+.cm-brand #cart-drawer .cart-totals__tax-note,
+.cm-brand #cart-drawer .cart-totals__tax-note a {
+  color: color-mix(in srgb, var(--cm-cream) 88%, transparent);
+}
+
 .cm-brand .cart-drawer__summary {
   border-top: 1px solid color-mix(in srgb, var(--cm-gold) 55%, transparent);
+  color: var(--cm-cream);
 }
 
 .cm-brand #cart-drawer .button-primary,
@@ -284,7 +391,7 @@
   border-radius: 0;
   background: var(--cm-cream);
   color: var(--cm-burgundy);
-  border: 1px solid var(--cm-gold);
+  border: 1px solid var(--cm-cream);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }

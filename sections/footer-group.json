@@ -64,8 +64,10 @@
         "brand_name": "Calling Marilyn",
         "logo_height": 72,
         "tagline": "Be first to know where the Photobooth Bus is next.",
+        "show_ribbon": true,
+        "ribbon_separator": "●",
         "primary_label": "Instagram",
-        "primary_link": "https://www.instagram.com/callingmarilyn/",
+        "primary_link": "",
         "primary_new_tab": true,
         "secondary_label": "Find the booth",
         "secondary_link": "",
@@ -75,7 +77,10 @@
         "book_menu": "footer",
         "show_newsletter": true,
         "newsletter_label": "Drop alerts",
+        "newsletter_email_label": "Email address",
+        "newsletter_placeholder": "Email address",
         "newsletter_button": "Sign up",
+        "newsletter_success": "You're on the list. See you at the next drop.",
         "status_line": "Kuwait & beyond",
         "show_policies": true
       }

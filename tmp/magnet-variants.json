@@ -1,0 +1,43 @@
+{
+  "input": {
+    "id": "gid://shopify/Product/8043631083563",
+    "productOptions": [
+      {
+        "name": "Design",
+        "values": [
+          { "name": "Marble" },
+          { "name": "Picnic" },
+          { "name": "Gold Stars" },
+          { "name": "Chrome" },
+          { "name": "Night Stars" },
+          { "name": "Cream Stars" },
+          { "name": "Hearts" },
+          { "name": "Harlequin" }
+        ]
+      },
+      {
+        "id": "gid://shopify/ProductOption/10210221260843",
+        "name": "Material",
+        "values": [{ "name": "Plastic" }, { "name": "Acrylic" }]
+      }
+    ],
+    "variants": [
+      { "optionValues": [{ "optionName": "Design", "name": "Marble" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Marble" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Picnic" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Picnic" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Gold Stars" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Gold Stars" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Chrome" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Chrome" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Night Stars" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Night Stars" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Cream Stars" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Cream Stars" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Hearts" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Hearts" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Harlequin" }, { "optionName": "Material", "name": "Plastic" }], "price": "1.000", "inventoryPolicy": "CONTINUE" },
+      { "optionValues": [{ "optionName": "Design", "name": "Harlequin" }, { "optionName": "Material", "name": "Acrylic" }], "price": "1.500", "inventoryPolicy": "CONTINUE" }
+    ]
+  }
+}

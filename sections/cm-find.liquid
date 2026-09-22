@@ -5,38 +5,66 @@
   assign cta_link = section.settings.cta_link
   assign view_more_label = section.settings.view_more_label
   assign view_more_link = section.settings.view_more_link
+  assign social_url = settings.social_instagram_url
+
   if view_more_link == blank
     assign view_more_link = pages.locations.url | default: '/pages/locations'
   endif
+
+  if cta_link == blank
+    assign cta_link = social_url
+  endif
+
+  assign bg = section.settings.background_color
 %}
 
-<section class="cm-find" aria-labelledby="cm-find-heading-{{ section.id }}">
+{% if bg != blank %}
+  {% style %}
+    #shopify-section-{{ section.id }} {
+      background-color: {{ bg }};
+    }
+  {% endstyle %}
+{% endif %}
+
+<section
+  class="cm-find"
+  aria-labelledby="cm-find-heading-{{ section.id }}"
+  style="
+    --cm-find-pad-top: {{ section.settings.padding_top }}px;
+    --cm-find-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --cm-find-max: {{ section.settings.content_width }}rem;
+  "
+>
   <div class="cm-find__copy">
     {% if heading != blank %}
       <h2 class="cm-find__heading" id="cm-find-heading-{{ section.id }}">{{ heading }}</h2>
+    {% else %}
+      <h2 class="visually-hidden" id="cm-find-heading-{{ section.id }}">Find us</h2>
     {% endif %}
     {% if intro != blank %}
       <p class="cm-find__intro">{{ intro }}</p>
     {% endif %}
-    <div class="cm-find__actions">
-      {% if view_more_label != blank %}
-        <a class="cm-find__cta cm-find__cta--primary" href="{{ view_more_link }}">
-          {{ view_more_label }}
-        </a>
-      {% endif %}
-      {% if cta_label != blank %}
-        <a
-          class="cm-find__cta"
-          href="{{ cta_link | default: 'https://www.instagram.com/callingmarilyn/' }}"
-          {% if section.settings.cta_new_tab %}
-            target="_blank"
-            rel="noopener noreferrer"
-          {% endif %}
-        >
-          {{ cta_label }}
-        </a>
-      {% endif %}
-    </div>
+    {% if view_more_label != blank or cta_label != blank %}
+      <div class="cm-find__actions">
+        {% if view_more_label != blank %}
+          <a class="cm-find__cta cm-find__cta--primary" href="{{ view_more_link }}">
+            {{ view_more_label }}
+          </a>
+        {% endif %}
+        {% if cta_label != blank and cta_link != blank %}
+          <a
+            class="cm-find__cta"
+            href="{{ cta_link }}"
+            {% if section.settings.cta_new_tab %}
+              target="_blank"
+              rel="noopener noreferrer"
+            {% endif %}
+          >
+            {{ cta_label }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
 
   <div class="cm-find__list-wrap">
@@ -49,9 +77,17 @@
               assign stop_num = forloop.index | prepend: '0'
             endif
             assign status_chip = block.settings.detail
+            assign place_new_tab = block.settings.open_in_new_tab
           %}
           {% if block.settings.link != blank %}
-            <a class="cm-find__link" href="{{ block.settings.link }}">
+            <a
+              class="cm-find__link"
+              href="{{ block.settings.link }}"
+              {% if place_new_tab %}
+                target="_blank"
+                rel="noopener noreferrer"
+              {% endif %}
+            >
               <span class="cm-find__stop" aria-hidden="true">{{ stop_num }}</span>
               <span class="cm-find__place">{{ block.settings.place }}</span>
               {% if status_chip != blank %}
@@ -71,7 +107,7 @@
       {% endfor %}
     </ul>
 
-    {% if view_more_label != blank %}
+    {% if section.settings.show_list_view_more and view_more_label != blank %}
       <a class="cm-find__view-more" href="{{ view_more_link }}">
         <span>{{ view_more_label }}</span>
         <span class="cm-find__view-more-arrow" aria-hidden="true">→</span>
@@ -84,9 +120,10 @@
   .cm-find {
     display: grid;
     gap: 2.5rem;
-    width: min(100% - 2.5rem, 70rem);
+    width: min(100% - 2.5rem, var(--cm-find-max, 70rem));
     margin-inline: auto;
-    padding-block: clamp(3.5rem, 9vw, 6.5rem);
+    padding-block: var(--cm-find-pad-top, clamp(3.5rem, 9vw, 6.5rem))
+      var(--cm-find-pad-bottom, clamp(3.5rem, 9vw, 6.5rem));
   }
 
   .cm-find__copy {
@@ -134,18 +171,19 @@
 
   .cm-find__cta--primary {
     background: var(--cm-burgundy);
-    color: var(--cm-cream);
-    border-color: var(--cm-gold);
+    color: var(--cm-on-red);
+    border-color: var(--cm-on-red);
   }
 
   .cm-find__cta:hover {
     background: var(--cm-burgundy);
-    color: var(--cm-cream);
+    color: var(--cm-on-red);
   }
 
   .cm-find__cta--primary:hover {
     background: var(--cm-red);
-    border-color: var(--cm-red);
+    border-color: var(--cm-on-red);
+    color: var(--cm-on-red);
   }
 
   .cm-find__cta:focus-visible {
@@ -221,9 +259,9 @@
     font-size: 0.62rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--cm-cream);
+    color: var(--cm-on-red);
     background: var(--cm-burgundy);
-    border: 1px solid var(--cm-gold);
+    border: 1px solid var(--cm-on-red);
     padding: 0.35rem 0.55rem;
     white-space: nowrap;
   }
@@ -273,7 +311,7 @@
   "name": "CM Find us",
   "tag": "section",
   "class": "section-cm-find",
-  "max_blocks": 12,
+  "max_blocks": 20,
   "settings": [
     {
       "type": "text",
@@ -304,6 +342,12 @@
       "info": "Create a page using the Locations template, then select it here."
     },
     {
+      "type": "checkbox",
+      "id": "show_list_view_more",
+      "label": "Show link under list",
+      "default": true
+    },
+    {
       "type": "header",
       "content": "Secondary button"
     },
@@ -316,13 +360,58 @@
     {
       "type": "url",
       "id": "cta_link",
-      "label": "Button link"
+      "label": "Button link",
+      "info": "Defaults to Theme settings → Brand accents → Instagram URL when blank."
     },
     {
       "type": "checkbox",
       "id": "cta_new_tab",
       "label": "Open link in new tab",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "min": 40,
+      "max": 90,
+      "step": 2,
+      "unit": "rem",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "info": "Leave blank for transparent (page cream)."
     }
   ],
   "blocks": [
@@ -339,13 +428,19 @@
         {
           "type": "text",
           "id": "detail",
-          "label": "Detail",
+          "label": "Detail / status",
           "default": "Now"
         },
         {
           "type": "url",
           "id": "link",
           "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Open link in new tab",
+          "default": false
         }
       ]
     }

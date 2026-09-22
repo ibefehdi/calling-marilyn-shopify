@@ -9,6 +9,10 @@
   assign variant = closest.product.selected_or_first_available_variant
   assign inventory_quantity = variant.inventory_quantity
   assign inventory_policy = variant.inventory_policy
+  assign is_booking = false
+  if product.tags contains 'Book'
+    assign is_booking = true
+  endif
 
   if variant.inventory_management == 'shopify'
     assign inventory_managed = true
@@ -25,6 +29,9 @@
     if variant.available
       assign can_add_to_cart = true
       assign add_to_cart_text = 'products.product.add_to_cart' | t
+      if is_booking
+        assign add_to_cart_text = 'Request booking'
+      endif
     elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'deny' or quantity_rule_soldout
       assign can_add_to_cart = false
       assign add_to_cart_text = 'products.product.sold_out' | t
@@ -109,7 +116,9 @@
             </div>
           {%- endif -%}
 
-          {% content_for 'block', type: 'quantity', id: 'quantity' %}
+          <div {% if is_booking %}hidden{% endif %}>
+            {% content_for 'block', type: 'quantity', id: 'quantity' %}
+          </div>
 
           {%- if has_quantity_rules -%}
             <div
