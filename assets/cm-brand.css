@@ -150,22 +150,52 @@
   justify-self: end;
 }
 
-.cm-brand .header a,
-.cm-brand .header button,
-.cm-brand .header summary,
-.cm-brand .header .header-menu__link,
-.cm-brand .header .header-actions__action,
-.cm-brand .header .header__icon,
-.cm-brand .header .svg-wrapper,
-.cm-brand .header .header-logo__text,
-.cm-brand .header .header__heading,
-.cm-brand .header .header__heading-link {
+/* Cream icons/links for the black bar only — not the open menu drawer */
+.cm-brand .header__row a,
+.cm-brand .header__row button,
+.cm-brand .header__row summary,
+.cm-brand .header__row .header-menu__link,
+.cm-brand .header__row .header-actions__action,
+.cm-brand .header__row .header__icon,
+.cm-brand .header__row .svg-wrapper,
+.cm-brand .header__row .header-logo__text,
+.cm-brand .header__row .header__heading,
+.cm-brand .header__row .header__heading-link {
   color: var(--cm-cream);
 }
 
-.cm-brand .header svg,
-.cm-brand .header .svg-wrapper svg {
+.cm-brand .header__row svg,
+.cm-brand .header__row .svg-wrapper svg {
   color: var(--cm-cream);
+  fill: currentColor;
+}
+
+/* Menu drawer: ink on cream so links stay readable */
+.cm-brand .menu-drawer {
+  background: var(--cm-cream);
+  color: var(--cm-ink);
+  --color-foreground: var(--cm-ink);
+  --color-foreground-rgb: 10 10 10;
+  --menu-top-level-font-color: var(--cm-ink);
+  --menu-top-level-font-color-rgb: 10 10 10;
+}
+
+.cm-brand .menu-drawer a,
+.cm-brand .menu-drawer .menu-drawer__menu-item,
+.cm-brand .menu-drawer .menu-drawer__menu-item-text,
+.cm-brand .menu-drawer .menu-drawer__close-button,
+.cm-brand .menu-drawer button {
+  color: var(--cm-ink);
+}
+
+.cm-brand .menu-drawer .menu-drawer__menu-item:hover,
+.cm-brand .menu-drawer .menu-drawer__menu-item:focus-visible {
+  color: var(--cm-burgundy);
+}
+
+.cm-brand .menu-drawer svg,
+.cm-brand .menu-drawer .svg-wrapper svg {
+  color: var(--cm-ink);
   fill: currentColor;
 }
 
