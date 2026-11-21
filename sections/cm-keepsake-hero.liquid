@@ -1,0 +1,458 @@
+{% liquid
+  assign heading_line_1 = section.settings.heading_line_1 | default: 'Photos worth'
+  assign heading_line_2 = section.settings.heading_line_2 | default: 'keeping.'
+  assign tagline = section.settings.tagline
+  assign cta_label = section.settings.cta_label
+  assign cta_link = section.settings.cta_link | default: routes.all_products_collection_url
+  assign secondary_label = section.settings.cta_secondary_label
+  assign secondary_link = section.settings.cta_secondary_link
+  assign strip_alt = section.settings.strip_alt | default: shop.name
+  assign bg = section.settings.background_color
+  assign strip_product = all_products['test-product']
+  if strip_product == blank
+    assign strip_product = all_products['photo-strip']
+  endif
+  assign magnets_product = all_products['moment-magnets']
+  assign product_strip_image = blank
+
+  if strip_product != blank and strip_product.featured_image != blank
+    assign product_strip_image = strip_product.featured_image
+  elsif strip_product != blank and strip_product.images.size > 1
+    assign product_strip_image = strip_product.images[1]
+  elsif magnets_product != blank and magnets_product.featured_image != blank
+    assign product_strip_image = magnets_product.featured_image
+  endif
+
+  if secondary_link == blank
+    assign secondary_link = pages.locations.url | default: '/pages/locations'
+  endif
+%}
+
+<section
+  class="cm-keepsake-hero"
+  aria-labelledby="cm-keepsake-hero-heading-{{ section.id }}"
+  style="
+    --cm-keepsake-pad-top: {{ section.settings.padding_top }}px;
+    --cm-keepsake-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --cm-keepsake-min-height: {{ section.settings.min_height }}svh;
+    {% if bg != blank %}--cm-keepsake-bg: {{ bg }};{% endif %}
+  "
+>
+  <div class="cm-keepsake-hero__inner">
+    <div class="cm-keepsake-hero__copy">
+      <h1 class="cm-keepsake-hero__heading" id="cm-keepsake-hero-heading-{{ section.id }}">
+        {% if heading_line_1 != blank %}
+          <span class="cm-keepsake-hero__line">{{ heading_line_1 }}</span>
+        {% endif %}
+        {% if heading_line_2 != blank %}
+          <span class="cm-keepsake-hero__line cm-keepsake-hero__line--accent">{{ heading_line_2 }}</span>
+        {% endif %}
+      </h1>
+
+      {% if tagline != blank %}
+        <p class="cm-keepsake-hero__tagline">{{ tagline }}</p>
+      {% endif %}
+
+      {% if cta_label != blank or secondary_label != blank %}
+        <div class="cm-keepsake-hero__actions">
+          {% if cta_label != blank %}
+            <a
+              class="cm-keepsake-hero__cta"
+              href="{{ cta_link }}"
+              {% if section.settings.cta_new_tab %}
+                target="_blank"
+                rel="noopener noreferrer"
+              {% endif %}
+            >
+              {{ cta_label }}
+            </a>
+          {% endif %}
+          {% if secondary_label != blank and secondary_link != blank %}
+            <a
+              class="cm-keepsake-hero__cta cm-keepsake-hero__cta--secondary"
+              href="{{ secondary_link }}"
+              {% if section.settings.cta_secondary_new_tab %}
+                target="_blank"
+                rel="noopener noreferrer"
+              {% endif %}
+            >
+              {{ secondary_label }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="cm-keepsake-hero__visual">
+      <figure class="cm-keepsake-hero__strip">
+        {% if section.settings.strip_image != blank %}
+          {% liquid
+            assign strip_alt = section.settings.strip_image.alt | default: strip_alt
+          %}
+          {{
+            section.settings.strip_image
+            | image_url: width: 900
+            | image_tag:
+              class: 'cm-keepsake-hero__strip-img',
+              loading: 'eager',
+              fetchpriority: 'high',
+              sizes: '(min-width: 900px) 28vw, 70vw',
+              widths: '400, 600, 900',
+              alt: strip_alt
+          }}
+        {% elsif section.settings.use_fallback_strip %}
+          <img
+            class="cm-keepsake-hero__strip-img"
+            src="{{ 'cm-hero-strip-product.jpg' | asset_url }}"
+            alt="{{ strip_alt | escape }}"
+            width="793"
+            height="2134"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        {% elsif product_strip_image != blank %}
+          {% liquid
+            assign strip_alt = product_strip_image.alt | default: strip_alt
+          %}
+          {{
+            product_strip_image
+            | image_url: width: 900
+            | image_tag:
+              class: 'cm-keepsake-hero__strip-img',
+              loading: 'eager',
+              fetchpriority: 'high',
+              sizes: '(min-width: 900px) 28vw, 70vw',
+              widths: '400, 600, 900',
+              alt: strip_alt
+          }}
+        {% else %}
+          <div class="cm-keepsake-hero__strip-empty" aria-hidden="true"></div>
+        {% endif %}
+      </figure>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .cm-keepsake-hero {
+    --cm-keepsake-bg: var(--cm-ink);
+    background: var(--cm-keepsake-bg);
+    color: var(--cm-cream);
+    min-height: var(--cm-keepsake-min-height, 78svh);
+    display: grid;
+    align-items: center;
+    padding-block: var(--cm-keepsake-pad-top, 2.5rem) var(--cm-keepsake-pad-bottom, 3rem);
+    position: relative;
+    z-index: 3;
+    overflow: visible;
+  }
+
+  .cm-keepsake-hero__inner {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    align-items: center;
+    width: min(100% - 2rem, 68rem);
+    margin-inline: auto;
+    position: relative;
+    overflow: visible;
+  }
+
+  .cm-keepsake-hero__copy {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 32rem;
+    z-index: 2;
+  }
+
+  .cm-keepsake-hero__heading {
+    margin: 0;
+    display: grid;
+    gap: 0.05em;
+  }
+
+  .cm-keepsake-hero__line {
+    display: block;
+    font-family: var(--font-body--family);
+    font-size: clamp(2.9rem, 9vw, 5.6rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .cm-keepsake-hero__line--accent {
+    font-family: var(--font-heading--family);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+  }
+
+  .cm-keepsake-hero__tagline {
+    margin: 0;
+    max-width: 30ch;
+    font-family: var(--font-body--family);
+    font-size: 1.02rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--cm-cream) 82%, transparent);
+  }
+
+  .cm-keepsake-hero__actions {
+    display: grid;
+    gap: 0.7rem;
+    justify-items: start;
+    margin-block-start: 0.35rem;
+  }
+
+  .cm-keepsake-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 12rem;
+    padding: 0.9rem 1.55rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: var(--cm-red);
+    color: var(--cm-on-red);
+    font-family: var(--font-body--family);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    text-align: center;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+
+  .cm-keepsake-hero__cta--secondary {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--cm-cream) 72%, transparent);
+    color: var(--cm-cream);
+  }
+
+  .cm-keepsake-hero__cta:hover {
+    background: var(--cm-burgundy);
+    color: var(--cm-on-red);
+  }
+
+  .cm-keepsake-hero__cta--secondary:hover {
+    background: color-mix(in srgb, var(--cm-cream) 12%, transparent);
+    border-color: var(--cm-cream);
+    color: var(--cm-cream);
+  }
+
+  .cm-keepsake-hero__cta:focus-visible {
+    outline: 3px solid var(--cm-cream);
+    outline-offset: 3px;
+  }
+
+  .cm-keepsake-hero__visual {
+    display: grid;
+    place-items: center;
+    justify-items: end;
+    position: relative;
+    z-index: 4;
+    overflow: visible;
+  }
+
+  .cm-keepsake-hero__strip {
+    margin: 0;
+    width: min(100%, 13.5rem);
+    border: 0;
+    border-radius: 0.55rem;
+    box-shadow: none;
+    background: transparent;
+    overflow: visible;
+    position: relative;
+    z-index: 5;
+    rotate: -8deg;
+  }
+
+  .cm-keepsake-hero__strip-img {
+    border-radius: 0.55rem;
+  }
+
+  .cm-keepsake-hero__strip-img,
+  .cm-keepsake-hero__strip-empty {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 342 / 1024;
+    object-fit: cover;
+    object-position: center top;
+    filter: drop-shadow(0 1.2rem 2.2rem rgba(0, 0, 0, 0.55));
+  }
+
+  .cm-keepsake-hero__strip-empty {
+    background:
+      linear-gradient(160deg, color-mix(in srgb, var(--cm-blush) 55%, var(--cm-cream)), var(--cm-taupe));
+  }
+
+  @media screen and (min-width: 900px) {
+    .cm-keepsake-hero {
+      padding-block-end: 0;
+    }
+
+    .cm-keepsake-hero__inner {
+      grid-template-columns: minmax(0, 1.2fr) minmax(14rem, 0.8fr);
+      gap: 0.75rem 0.25rem;
+      align-items: center;
+      min-height: inherit;
+    }
+
+    .cm-keepsake-hero__visual {
+      justify-items: end;
+      align-self: stretch;
+      height: 100%;
+      padding-inline-end: 0;
+    }
+
+    .cm-keepsake-hero__strip {
+      width: min(100%, 16.5rem);
+      margin-inline-end: clamp(0rem, 2vw, 1.5rem);
+      margin-block-start: calc(var(--header-height, 60px) * -0.85);
+      margin-block-end: -8rem;
+      rotate: -9deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-keepsake-hero__cta {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Keepsake hero",
+  "tag": "section",
+  "class": "section-cm-keepsake-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading line 1",
+      "default": "Photos worth"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading line 2",
+      "default": "keeping."
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Photobooths, photo strips and little keepsakes."
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary button",
+      "default": "Shop keepsakes"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Primary link"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open primary in new tab",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary button",
+      "default": "Find a booth."
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "Secondary link",
+      "info": "Defaults to the Locations page when blank."
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_secondary_new_tab",
+      "label": "Open secondary in new tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Photo strip"
+    },
+    {
+      "type": "image_picker",
+      "id": "strip_image",
+      "label": "Strip image",
+      "info": "Optional. If empty, uses the Photo Strip / Moment Magnets product image, then a Moment Magnets asset."
+    },
+    {
+      "type": "text",
+      "id": "strip_alt",
+      "label": "Strip alt text",
+      "default": "Photo strip keepsake"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_fallback_strip",
+      "label": "Use Moment Magnets asset when no product image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 50,
+      "max": 100,
+      "step": 2,
+      "unit": "svh",
+      "default": 78
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "info": "Leave blank for brand ink."
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Keepsake hero"
+    }
+  ]
+}
+{% endschema %}

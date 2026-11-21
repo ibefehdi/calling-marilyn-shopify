@@ -9,375 +9,174 @@
  */
 {
   "sections": {
-    "cm_cinema_hero": {
-      "type": "cm-cinema-hero",
+    "cm_keepsake_hero": {
+      "type": "cm-keepsake-hero",
       "settings": {
-        "image": "shopify://shop_images/image.png",
-        "use_fallback_image": true,
-        "script_line": "Book · Shop · Drop",
-        "heading_style": "logo",
-        "heading": "Calling Marilyn",
-        "logo_height": 72,
-        "tagline": "Reserve a booth, shop the merch, or drop us a line.",
-        "show_ribbon": true,
-        "ribbon_text": "DROP",
-        "cta_label": "Book a booth",
-        "cta_link": "/#book",
+        "heading_line_1": "Photos worth",
+        "heading_line_2": "keeping.",
+        "tagline": "Photobooths, photo strips and little keepsakes.",
+        "cta_label": "Shop keepsakes",
+        "cta_link": "/collections/all",
         "cta_new_tab": false,
-        "cta_secondary_label": "Shop",
-        "cta_secondary_link": "/#shop",
+        "cta_secondary_label": "Find a booth.",
+        "cta_secondary_link": "/pages/locations",
         "cta_secondary_new_tab": false,
-        "min_height": 100,
-        "content_max_width": 42,
-        "overlay_opacity": 15,
-        "enable_drift": true,
+        "strip_image": "",
+        "strip_alt": "Photo strip keepsake",
+        "use_fallback_strip": true,
+        "min_height": 78,
+        "padding_top": 48,
+        "padding_bottom": 56,
+        "background_color": ""
+      }
+    },
+    "cm_magnet_shop": {
+      "type": "cm-magnet-shop",
+      "blocks": {
+        "m1": {
+          "type": "magnet",
+          "settings": {
+            "image": "",
+            "border_image": "",
+            "photo_image": "",
+            "caption": "Harlequin",
+            "link": "/products/moment-magnets",
+            "offset_x": 34,
+            "offset_y": 12,
+            "width": 14,
+            "rotate": -2
+          }
+        },
+        "m2": {
+          "type": "magnet",
+          "settings": {
+            "image": "",
+            "border_image": "",
+            "photo_image": "",
+            "caption": "Blue diamonds",
+            "link": "/products/moment-magnets",
+            "offset_x": 50,
+            "offset_y": 10,
+            "width": 14,
+            "rotate": 1
+          }
+        },
+        "m3": {
+          "type": "magnet",
+          "settings": {
+            "image": "",
+            "border_image": "",
+            "photo_image": "",
+            "caption": "Hearts",
+            "link": "/products/moment-magnets",
+            "offset_x": 66,
+            "offset_y": 13,
+            "width": 14,
+            "rotate": -1
+          }
+        },
+        "m4": {
+          "type": "magnet",
+          "settings": {
+            "image": "",
+            "border_image": "",
+            "photo_image": "",
+            "caption": "Golden stars",
+            "link": "/products/moment-magnets",
+            "offset_x": 82,
+            "offset_y": 11,
+            "width": 14,
+            "rotate": 2
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "heading": "Shop the magnets.",
+        "scene_image": "",
+        "scene_alt": "Retro fridge with Moment Magnets",
+        "use_baked_magnets": true,
+        "cta_label": "Shop magnets.",
+        "cta_link": "/products/moment-magnets",
+        "cta_new_tab": false,
+        "coming_soon": "More keepsakes coming soon.",
+        "coming_list": "Bookmarks · Phone cases · Stickers",
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "background_color": "#c4e2c8"
+      }
+    },
+    "cm_memory": {
+      "type": "cm-memory",
+      "settings": {
+        "heading": "Make a memory.",
+        "left_image": "",
+        "left_alt": "Marilyn's Post photobooth",
+        "right_top_image": "",
+        "right_top_alt": "Moment magnets collage",
+        "tape_label": "1-800-SEND-PIC",
+        "right_bottom_image": "",
+        "right_bottom_alt": "Photo strip magnets",
+        "use_fallback_images": true,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "background_color": ""
+      }
+    },
+    "cm_photobus": {
+      "type": "cm-photobus",
+      "settings": {
+        "image": "",
+        "image_alt": "Marilyn's Photobus",
+        "use_fallback_image": true,
+        "heading": "Meet the Photobus.",
+        "description": "The photo booth that comes with wheels.",
+        "cta_label": "Explore the Photobus",
+        "cta_link": "/pages/locations",
+        "cta_new_tab": false,
         "padding_top": 0,
         "padding_bottom": 0,
         "background_color": ""
       }
     },
-    "cm_pillars": {
-      "type": "cm-pillars",
+    "cm_booth_feature": {
+      "type": "cm-booth-feature",
       "blocks": {
-        "book": {
-          "type": "pillar",
+        "stop_1": {
+          "type": "stop",
           "settings": {
-            "kicker": "01",
-            "title": "Book",
-            "text": "Reserve a booth for your party, launch, or private night.",
-            "link": "/#book",
-            "cta_label": "See booths"
-          }
-        },
-        "shop": {
-          "type": "pillar",
-          "settings": {
-            "kicker": "02",
-            "title": "Shop",
-            "text": "Frames, merch, and keepsakes — we’re getting merchandise ready.",
-            "link": "/#shop",
-            "cta_label": "Browse shop"
-          }
-        },
-        "drop": {
-          "type": "pillar",
-          "settings": {
-            "kicker": "03",
-            "title": "Drop",
-            "text": "Message us, share a suggestion, or request a custom booth at your space.",
-            "link": "/#drop",
-            "cta_label": "Drop a note"
-          }
-        }
-      },
-      "block_order": [
-        "book",
-        "shop",
-        "drop"
-      ],
-      "settings": {
-        "anchor_id": "start",
-        "eyebrow": "Calling Marilyn",
-        "heading": "Book. Shop. Drop.",
-        "intro": "Three ways into the booth — reserve a moment, take home merch, or drop us a line.",
-        "nav_label": "Book, Shop and Drop",
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "background_color": ""
-      }
-    },
-    "cm_ticker": {
-      "type": "cm-ticker",
-      "blocks": {
-        "t1": {
-          "type": "item",
-          "settings": {
-            "text": "Book"
-          }
-        },
-        "t2": {
-          "type": "item",
-          "settings": {
-            "text": "Shop"
-          }
-        },
-        "t3": {
-          "type": "item",
-          "settings": {
-            "text": "Drop"
-          }
-        },
-        "t4": {
-          "type": "item",
-          "settings": {
-            "text": "Kuwait"
-          }
-        },
-        "t5": {
-          "type": "item",
-          "settings": {
-            "text": "Photobooth Bus"
-          }
-        }
-      },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3",
-        "t4",
-        "t5"
-      ],
-      "settings": {
-        "aria_label": "Brand ticker",
-        "enable_animation": true,
-        "speed": 32,
-        "show_separator": true,
-        "separator": "◆",
-        "background_color": "",
-        "text_color": "",
-        "dot_color": "",
-        "padding_y": 14
-      }
-    },
-    "cm_photostrip": {
-      "type": "cm-photostrip",
-      "blocks": {
-        "f1": {
-          "type": "frame",
-          "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-07-27_at_22.30.45.jpg",
-            "caption": "1",
-            "link": ""
-          }
-        },
-        "f2": {
-          "type": "frame",
-          "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-07-27_at_22.30.46.jpg",
-            "caption": "2",
-            "link": ""
-          }
-        },
-        "f3": {
-          "type": "frame",
-          "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-07-27_at_22.30.51.jpg",
-            "caption": "3",
-            "link": ""
-          }
-        },
-        "f4": {
-          "type": "frame",
-          "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-07-27_at_22.30.45_1.jpg",
-            "caption": "4",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3",
-        "f4"
-      ],
-      "settings": {
-        "eyebrow": "The booth",
-        "heading": "Four frames. Two Strips. Forever.",
-        "stamp": "Kuwait · Calling Marilyn",
-        "strip_aria_label": "Photo strip frames",
-        "use_fallback_frames": true,
-        "frame_delay": 780,
-        "flash_duration": 160,
-        "background_color": "",
-        "padding_top": 64,
-        "padding_bottom": 64
-      }
-    },
-    "cm_manifesto": {
-      "type": "cm-manifesto",
-      "settings": {
-        "label": "Our promise",
-        "quote": "An event lasts a day. A photo lasts forever.",
-        "attribution": "Calling Marilyn",
-        "show_rule": true,
-        "show_image": true,
-        "use_fallback_image": true,
-        "image_alt": "",
-        "body": "<p>Premium photobooth moments across Kuwait — from mall takeovers to private celebrations — built for people who collect memories, not just photos.</p>",
-        "layout": "quote_first",
-        "panel_padding": 64,
-        "quote_background": "",
-        "quote_text_color": "",
-        "story_background": ""
-      }
-    },
-    "cm_book": {
-      "type": "cm-book",
-      "settings": {
-        "anchor_id": "book",
-        "eyebrow": "Book",
-        "heading": "Book the booth",
-        "intro": "Pick a booth experience — parties, launches, and private nights. Tap through for details and booking info.",
-        "product_tag": "Book",
-        "collection": "",
-        "max_products": 8,
-        "show_price": true,
-        "show_excerpt": true,
-        "card_cta_label": "View booth",
-        "empty_message": "Booth bookings are being staged — check back soon.",
-        "view_all_label": "",
-        "view_all_link": "",
-        "padding_top": 72,
-        "padding_bottom": 72,
-        "background_color": ""
-      }
-    },
-    "cm_film_divider": {
-      "type": "cm-film-divider",
-      "settings": {
-        "strip_height": 16,
-        "padding_y": 8,
-        "background_color": "",
-        "hole_color": "#b8955a"
-      }
-    },
-    "cm_shop": {
-      "type": "cm-shop",
-      "settings": {
-        "anchor_id": "shop",
-        "eyebrow": "Shop",
-        "heading": "Shop the moment",
-        "intro": "Frames, merch, and keepsakes from the booth.",
-        "merch_note": "Merchandise in progress",
-        "exclude_tag": "Book",
-        "collection": "",
-        "max_products": 8,
-        "show_price": true,
-        "card_cta_label": "Shop",
-        "empty_heading": "Merch is on the way",
-        "empty_message": "We’re working on getting the merchandise ready. Follow Instagram for the first drop.",
-        "empty_cta_label": "Follow the drop",
-        "empty_cta_link": "https://www.instagram.com/callingmarilyn/",
-        "view_all_label": "View all",
-        "view_all_link": "/collections/all",
-        "padding_top": 72,
-        "padding_bottom": 72,
-        "background_color": ""
-      }
-    },
-    "cm_drop": {
-      "type": "cm-drop",
-      "settings": {
-        "anchor_id": "drop",
-        "eyebrow": "Drop",
-        "heading": "Drop us a line",
-        "intro": "Leave a suggestion, or request a customized photobooth at your space.",
-        "type_legend": "What are you dropping?",
-        "label_custom": "Custom booth",
-        "label_suggestion": "Suggestion",
-        "helper_custom": "Request a booth at your space.",
-        "helper_suggestion": "Ideas for the brand — not a booking.",
-        "label_name": "Name",
-        "label_email": "Email",
-        "label_phone": "Phone",
-        "label_about": "About",
-        "about_placeholder": "Choose a topic",
-        "about_merch": "Merch",
-        "about_locations": "Locations",
-        "about_experience": "Booth experience",
-        "about_other": "Other",
-        "label_space": "Space / venue",
-        "label_area": "Area / city",
-        "label_date": "Preferred date",
-        "label_guests": "Approx. guests",
-        "label_body_custom": "Tell us about the event",
-        "label_body_suggestion": "Your suggestion",
-        "placeholder_custom": "Tell us about the event, vibe, and timing…",
-        "placeholder_suggestion": "Share your idea…",
-        "submit_label_custom": "Request custom booth",
-        "submit_label_suggestion": "Send suggestion",
-        "success_title_custom": "Request received",
-        "success_message_custom": "Got it — we’ll follow up about your booth.",
-        "success_title_suggestion": "Suggestion received",
-        "success_message_suggestion": "Thanks for the idea — we’ll take a look.",
-        "padding_top": 72,
-        "padding_bottom": 72,
-        "background_color": ""
-      }
-    },
-    "cm_find": {
-      "type": "cm-find",
-      "blocks": {
-        "p1": {
-          "type": "place",
-          "settings": {
-            "place": "Marina Mall",
-            "detail": "Now open",
+            "image": "",
+            "detail": "Murouj",
+            "place": "Marilyn's Post Office",
+            "link_label": "Get directions",
             "link": "https://share.google/dFt4rg99IotL3AptY",
-            "open_in_new_tab": false
-          }
-        },
-        "p2": {
-          "type": "place",
-          "settings": {
-            "place": "Thuraya Mall",
-            "detail": "Kuwait",
-            "link": "https://share.google/OfOyhu3zdSZoAuhtB",
-            "open_in_new_tab": false
-          }
-        },
-        "p3": {
-          "type": "place",
-          "settings": {
-            "place": "Assima Mall",
-            "detail": "Kuwait",
-            "link": "https://share.google/3F4YP7AalRAsvVuRE",
-            "open_in_new_tab": false
-          }
-        },
-        "p4": {
-          "type": "place",
-          "settings": {
-            "place": "Private events",
-            "detail": "Book",
-            "link": "https://www.instagram.com/callingmarilyn/",
-            "open_in_new_tab": false
+            "open_in_new_tab": true
           }
         }
       },
       "block_order": [
-        "p1",
-        "p2",
-        "p3",
-        "p4"
+        "stop_1"
       ],
       "settings": {
-        "heading": "Where next?",
-        "intro": "Catch the Photobooth Bus around Kuwait — malls, pop-ups, and private nights.",
-        "view_more_label": "View more",
-        "view_more_link": "/pages/locations",
-        "show_list_view_more": true,
-        "cta_label": "Follow for drop pins",
-        "cta_link": "",
-        "cta_new_tab": true,
-        "content_width": 70,
-        "padding_top": 72,
-        "padding_bottom": 72,
-        "background_color": ""
+        "heading": "Find a booth near you.",
+        "region_label": "Kuwait",
+        "padding_top": 56,
+        "padding_bottom": 64,
+        "background_color": "",
+        "use_fallback_image": true
       }
     }
   },
   "order": [
-    "cm_cinema_hero",
-    "cm_pillars",
-    "cm_ticker",
-    "cm_photostrip",
-    "cm_manifesto",
-    "cm_book",
-    "cm_film_divider",
-    "cm_shop",
-    "cm_drop",
-    "cm_find"
+    "cm_keepsake_hero",
+    "cm_magnet_shop",
+    "cm_memory",
+    "cm_photobus",
+    "cm_booth_feature"
   ]
 }

@@ -32,6 +32,21 @@
 .cm-brand .page-wrapper {
   position: relative;
   z-index: 0;
+  overflow-x: clip;
+}
+
+.cm-brand .content-for-layout,
+.cm-brand .shopify-section.section-cm-keepsake-hero,
+.cm-brand .shopify-section.section-cm-magnet-shop {
+  overflow: visible;
+}
+
+.cm-brand .header-section {
+  z-index: 6;
+}
+
+.cm-brand #header-component[transparent] {
+  z-index: 6;
 }
 
 .cm-brand #book,
@@ -78,24 +93,61 @@
 /* Horizon paints the header via .header__underlay + --color-background-top-row */
 .cm-brand .header,
 .cm-brand #header-component {
-  --color-background-top-row: var(--cm-burgundy);
-  --color-background-bottom-row: var(--cm-burgundy);
+  --color-background-top-row: var(--cm-ink);
+  --color-background-bottom-row: var(--cm-ink);
   --color-foreground: var(--cm-cream);
-  --color-background: var(--cm-burgundy);
+  --color-background: var(--cm-ink);
   --color-foreground-rgb: 243 235 227;
   color: var(--cm-cream);
 }
 
 .cm-brand .header__underlay-closed,
 .cm-brand .header__underlay-open {
-  background: var(--cm-burgundy) !important;
+  background: var(--cm-ink) !important;
 }
 
 .cm-brand .header__row {
   color: var(--cm-cream);
   --color-foreground: var(--cm-cream);
-  border-bottom: 1px solid color-mix(in srgb, var(--cm-gold) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--cm-cream) 16%, transparent);
   backdrop-filter: none;
+}
+
+/* Keep the mock chrome: logo left, cart + hamburger right on all breakpoints */
+.cm-brand #header-component .header-menu,
+.cm-brand #header-component .dropdown-localization,
+.cm-brand #header-component[data-menu-style='menu'] .header-menu,
+.cm-brand #header-component[data-menu-style='menu'] .dropdown-localization {
+  display: none;
+}
+
+.cm-brand #header-component .header__row--top .header__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: 'logo actions drawer';
+  align-items: center;
+  column-gap: 0.35rem;
+}
+
+.cm-brand #header-component .header__row--top .header__column {
+  display: contents;
+}
+
+.cm-brand #header-component .header__row--top .header-logo {
+  grid-area: logo;
+  justify-self: start;
+}
+
+.cm-brand #header-component .header__row--top header-actions {
+  grid-area: actions;
+  justify-self: end;
+}
+
+.cm-brand #header-component .header__row--top .header__drawer {
+  grid-area: drawer;
+  display: flex;
+  min-height: var(--header-drawer-min-height, 60px);
+  justify-self: end;
 }
 
 .cm-brand .header a,
@@ -123,11 +175,11 @@
 }
 
 .cm-brand .announcement-bar {
-  background: var(--cm-burgundy);
+  background: var(--cm-ink);
   color: var(--cm-cream);
   --color-foreground: var(--cm-cream);
-  --color-background: var(--cm-burgundy);
-  box-shadow: inset 0 -2px 0 var(--cm-gold);
+  --color-background: var(--cm-ink);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--cm-cream) 16%, transparent);
 }
 
 .cm-brand .announcement-bar a,

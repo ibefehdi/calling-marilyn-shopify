@@ -1,0 +1,319 @@
+{% liquid
+  assign heading = section.settings.heading | default: 'Meet the Photobus.'
+  assign description = section.settings.description
+  assign cta_label = section.settings.cta_label
+  assign cta_link = section.settings.cta_link
+  assign image_alt = section.settings.image_alt | default: 'Calling Marilyn Photobus'
+  assign bg = section.settings.background_color
+  assign photobus_product = all_products['marilyns-photobus']
+
+  if cta_link == blank
+    if photobus_product != blank
+      assign cta_link = photobus_product.url
+    else
+      assign cta_link = pages.locations.url | default: '/pages/locations'
+    endif
+  endif
+%}
+
+<section
+  class="cm-photobus"
+  aria-labelledby="cm-photobus-heading-{{ section.id }}"
+  style="
+    --cm-photobus-pad-top: {{ section.settings.padding_top }}px;
+    --cm-photobus-pad-bottom: {{ section.settings.padding_bottom }}px;
+    {% if bg != blank %}--cm-photobus-bg: {{ bg }};{% endif %}
+  "
+>
+  <div class="cm-photobus__media">
+    {% if section.settings.image != blank %}
+      {% liquid
+        assign image_alt = section.settings.image.alt | default: image_alt
+      %}
+      {{
+        section.settings.image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'cm-photobus__img',
+          loading: 'lazy',
+          sizes: '100vw',
+          widths: '800, 1200, 1600, 2000, 2400',
+          alt: image_alt
+      }}
+    {% elsif section.settings.use_fallback_image %}
+      <img
+        class="cm-photobus__img"
+        src="{{ 'cm-photobus-banner.jpg' | asset_url }}"
+        alt="{{ image_alt | escape }}"
+        width="2400"
+        height="1350"
+        loading="lazy"
+      >
+    {% elsif photobus_product != blank and photobus_product.featured_image != blank %}
+      {% liquid
+        assign image_alt = photobus_product.featured_image.alt | default: photobus_product.title | default: image_alt
+      %}
+      {{
+        photobus_product.featured_image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'cm-photobus__img',
+          loading: 'lazy',
+          sizes: '100vw',
+          widths: '800, 1200, 1600, 2000, 2400',
+          alt: image_alt
+      }}
+    {% else %}
+      <div class="cm-photobus__placeholder" role="img" aria-label="{{ image_alt | escape }}"></div>
+    {% endif %}
+    <div class="cm-photobus__veil" aria-hidden="true"></div>
+  </div>
+
+  <div class="cm-photobus__inner">
+    <div class="cm-photobus__card">
+      {% if heading != blank %}
+        <h2 class="cm-photobus__heading" id="cm-photobus-heading-{{ section.id }}">{{ heading }}</h2>
+      {% else %}
+        <h2 class="visually-hidden" id="cm-photobus-heading-{{ section.id }}">Meet the Photobus</h2>
+      {% endif %}
+      {% if description != blank %}
+        <p class="cm-photobus__description">{{ description }}</p>
+      {% endif %}
+      {% if cta_label != blank %}
+        <a
+          class="cm-photobus__cta"
+          href="{{ cta_link }}"
+          {% if section.settings.cta_new_tab %}
+            target="_blank"
+            rel="noopener noreferrer"
+          {% endif %}
+        >
+          <span>{{ cta_label }}</span>
+          <span class="cm-photobus__cta-arrow" aria-hidden="true">↗</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .cm-photobus {
+    --cm-photobus-bg: var(--cm-cream);
+    position: relative;
+    isolation: isolate;
+    background: var(--cm-photobus-bg);
+    color: var(--cm-cream);
+    min-height: clamp(22rem, 58vw, 34rem);
+    padding-block: var(--cm-photobus-pad-top, 0) var(--cm-photobus-pad-bottom, 0);
+    overflow: hidden;
+  }
+
+  .cm-photobus__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .cm-photobus__img,
+  .cm-photobus__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cm-photobus__placeholder {
+    background:
+      radial-gradient(circle at 30% 40%, color-mix(in srgb, var(--cm-red) 55%, transparent), transparent 50%),
+      linear-gradient(135deg, var(--cm-burgundy), var(--cm-ink));
+  }
+
+  .cm-photobus__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--cm-ink) 55%, transparent) 0%, transparent 55%),
+      linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--cm-ink) 35%, transparent));
+  }
+
+  .cm-photobus__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-items: end;
+    min-height: inherit;
+    width: min(100% - 2.5rem, 72rem);
+    margin-inline: auto;
+    padding-block: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .cm-photobus__card {
+    display: grid;
+    gap: 0.7rem;
+    max-width: 26rem;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    backdrop-filter: none;
+    text-shadow: 0 1px 12px color-mix(in srgb, var(--cm-ink) 55%, transparent);
+  }
+
+  .cm-photobus__heading {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .cm-photobus__description {
+    margin: 0;
+    max-width: 28ch;
+    font-family: var(--font-body--family);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--cm-cream) 92%, transparent);
+  }
+
+  .cm-photobus__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    justify-self: start;
+    margin-block-start: 0.55rem;
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #111111;
+    font-family: var(--font-body--family);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    text-shadow: none;
+    box-shadow: 0 0.35rem 1.1rem color-mix(in srgb, var(--cm-ink) 28%, transparent);
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .cm-photobus__cta:hover {
+    background: #fff7f2;
+    color: #111111;
+    transform: translateY(-1px);
+  }
+
+  .cm-photobus__cta:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+  }
+
+  .cm-photobus__cta-arrow {
+    font-size: 0.95em;
+    line-height: 1;
+  }
+
+  @media screen and (min-width: 900px) {
+    .cm-photobus__inner {
+      align-items: center;
+    }
+
+    .cm-photobus__card {
+      padding: 0;
+      max-width: 28rem;
+    }
+
+    .cm-photobus__cta {
+      padding: 0.95rem 1.35rem;
+      border-radius: 999px;
+      font-size: 0.92rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CM Photobus banner",
+  "tag": "section",
+  "class": "section-cm-photobus",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Calling Marilyn Photobus"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_fallback_image",
+      "label": "Use fallback image when empty",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Meet the Photobus."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "The photo booth that comes with wheels."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Explore the Photobus"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link",
+      "info": "Defaults to the Locations page when blank."
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open button in new tab",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fallback background"
+    }
+  ],
+  "presets": [
+    {
+      "name": "CM Photobus banner"
+    }
+  ]
+}
+{% endschema %}

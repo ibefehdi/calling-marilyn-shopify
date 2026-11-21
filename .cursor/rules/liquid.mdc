@@ -98,6 +98,8 @@ See [@schemas](mdc:.cursor/rules/schemas.mdc) for more details.
 - Use `{% liquid %}` for multiline code blocks
 - Use `{% # comment %}` for inline comments
 - Never invent new filters, tags, or objects
+- Do not put filters inside `{% render %}` arguments. `height: settings.pixel_height | default: 48` is a syntax error. Assign the filtered value first, then pass the variable.
+- Homepage redesign sections live as `sections/cm-keepsake-hero.liquid`, `cm-magnet-shop.liquid`, `cm-memory.liquid`, `cm-photobus.liquid`, and `cm-booth-feature.liquid`. Keep image pickers for every photo slot so merchants can replace placeholders without code changes.
 - Follow proper tag closing order (last opened, first closed)
 - Use object dot notation: `product.title` not `product['title']`
 - Respect object scope and availability

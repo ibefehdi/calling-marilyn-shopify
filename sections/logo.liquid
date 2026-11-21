@@ -1,6 +1,7 @@
 {% liquid
   assign section_settings = section.settings
   assign image = settings.logo
+  assign logo_fallback_height = section_settings.pixel_height | default: 48
 
   if section_settings.inverse and settings.logo_inverse
     assign image = settings.logo_inverse
@@ -76,7 +77,7 @@
       <div class="logo-section__image-wrapper">
         {% render 'cm-logo',
           class: 'logo-section__image',
-          height: section_settings.pixel_height | default: 48,
+          height: logo_fallback_height,
           alt: shop.name
         %}
       </div>

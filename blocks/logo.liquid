@@ -1,6 +1,7 @@
 {% liquid
   assign block_settings = block.settings
   assign image = settings.logo
+  assign logo_fallback_height = block_settings.pixel_height | default: 48
 
   if block_settings.inverse and settings.logo_inverse
     assign image = settings.logo_inverse
@@ -65,7 +66,7 @@
     <div class="logo-block__image-wrapper">
       {% render 'cm-logo',
         class: 'logo-block__image',
-        height: block_settings.pixel_height | default: 48,
+        height: logo_fallback_height,
         alt: shop.name
       %}
     </div>
